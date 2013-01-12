@@ -1,0 +1,31 @@
+{
+	"name": "mjolnir/foundation",
+	"version": "0.0",
+	"description": "Mjolnir foundation module",
+	"keywords": ["routing"],
+	"homepage": "https://github.com/ibidem",
+	"type": "library",
+	"license": "BSD-2",
+	"authors": [
+		{
+			"name": "srcspider",
+			"homepage": "https://github.com/srcspider"
+		}
+	],
+
+	"require": {
+		"php": ">=5.4.4"
+	},
+
+	"autoload": {
+		"psr-0": {
+			"mjolnir\\foundation": "../.."
+		}
+	},
+
+	"extra": {
+		"branch-alias": {
+			"dev-wip/v1.0": "1.0.x-dev"
+		}
+	}
+}
