@@ -22,7 +22,7 @@ class Layer_JSend extends \app\Instantiatable implements \mjolnir\types\Layer
 		$channel = $this->channel();
 
 		// we register ourselves in the channel
-		$channel->add('layer:jsent', $this);
+		$channel->set('layer:jsent', $this);
 
 		// set the correct content-type
 		$channel->add('http:header', ['content-type', 'application/json']);

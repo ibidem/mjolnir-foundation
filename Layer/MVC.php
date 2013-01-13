@@ -19,7 +19,7 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 		$channel = $this->channel();
 
 		// we register ourselves in the channel
-		$channel->add('layer:mvc', $this);
+		$channel->set('layer:mvc', $this);
 
 		$relaynode = $channel->get('relaynode');
 		$controller = $relaynode->get('controller');

@@ -17,7 +17,7 @@ class Layer_HTTP extends \app\Instantiatable implements \mjolnir\types\Layer
 	function run()
 	{
 		$channel = $this->channel();
-		$channel->add('layer:http', $this);
+		$channel->set('layer:http', $this);
 
 		$http = $this;
 		$channel->add_preprocessor
@@ -40,7 +40,7 @@ class Layer_HTTP extends \app\Instantiatable implements \mjolnir\types\Layer
 			(
 				'http:status',
 				$this->status_from_errortype
-					($this->channel()->get('errortype', 'unknown'))
+					($this->channel()->get('exception', null))
 			);
 	}
 
@@ -106,17 +106,17 @@ class Layer_HTTP extends \app\Instantiatable implements \mjolnir\types\Layer
 	/**
 	 * @return string status
 	 */
-	protected function status_from_errortype($errortype)
+	protected function status_from_errortype(\Exception $exception)
 	{
-		if ($errortype === 'Not Found')
+		if (\is_a($exception, '\app\Exception_NotFound'))
 		{
 			$status = '404 Not Found';
 		}
-		else if ($errortype === 'Forbidden')
+		else if (\is_a($exception, '\app\Exception_NotAllowed'))
 		{
 			$status = '403 Forbidden';
 		}
-		else if ($errortype === 'Not Implemented')
+		else if (\is_a($exception, '\app\Exception_NotImplemented'))
 		{
 			$status = '501 Not Implemented';
 		}

@@ -9,6 +9,18 @@
  */
 class RelayNode extends \app\Instantiatable implements \mjolnir\types\RelayNode
 {
-	use Trait_RelayNode;
+	use \app\Trait_RelayNode;
+
+	/**
+	 * @return \mjolnir\types\RelayNode
+	 */
+	static function instance(array $source = null)
+	{
+		$instance = parent::instance();
+
+		$instance->metadata_is($source);
+
+		return $instance;
+	}
 
 } # class
