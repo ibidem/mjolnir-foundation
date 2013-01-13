@@ -12,7 +12,7 @@
 								// be overwritten on a per file basis
 								'namespace' => 'mjolnir\foundation',
 
-								'title' => 'Foundation',
+								'title' => 'Foundation Classes',
 
 								'introduction' => array
 									(
