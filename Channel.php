@@ -11,6 +11,9 @@ class Channel extends \app\Instantiatable implements \mjolnir\types\Channel
 {
 	use \app\Trait_Channel;
 
+	const nominal = 0;
+	const error = 1;
+
 	/**
 	 * @var int
 	 */
