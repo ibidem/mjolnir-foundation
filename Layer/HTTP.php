@@ -63,7 +63,7 @@ class Layer_HTTP extends \app\Instantiatable implements \mjolnir\types\Layer
 	{
 		$http_config = \app\CFS::config('mjolnir/http');
 
-		$status = $channel->get('http:status', $http_config['status']);
+		$status = $channel->get('http:status', '200 OK');
 
 		if (\strtolower($http_config['interface']) === 'fastcgi')
 		{

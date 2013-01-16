@@ -15,6 +15,8 @@ class Router
 	static function check_all()
 	{
 		$routes = \app\CFS::config('routes');
+		
+		$url = \app\Server::request_uri();
 
 		// format: [ key, regex, allowed methods ]
 		foreach ($routes as $pattern => $route_info)
@@ -35,7 +37,8 @@ class Router
 
 			// create route pattern
 			$matcher = \app\URLRoute::instance()
-				->urlpattern($pattern, $regex_pattern);
+				->urlpattern($pattern, $regex_pattern)
+				->set('url', $url);
 
 			if ($matcher->check())
 			{
@@ -194,7 +197,7 @@ class Router
 	 */
 	protected static function translate_pattern($pattern)
 	{
-		if (\app\Lang::get_lang() !== 'en-us')
+		if (\app\Lang::targetlang() !== 'en-us')
 		{
 			// load route translations
 			$translations = \app\Lang::file('routes');

@@ -12,8 +12,13 @@ class Relay
 	/**
 	 * ...
 	 */
-	static function process($key, callable $callback, $matcher = null)
+	static function process($key, callable $callback, $matcher = null, $url = null)
 	{
+		if ($url !== null)
+		{
+			$url = \app\Server::request_uri();
+		}
+		
 		$relays = \app\CFS::config('mjolnir/relays');
 
 		if (isset($relays[$key]))
@@ -30,6 +35,8 @@ class Relay
 					// no matcher provided; fail relay
 					return;
 				}
+				
+				$matcher->set('url', $url);
 
 				if ($matcher->check())
 				{

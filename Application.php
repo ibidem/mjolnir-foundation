@@ -24,9 +24,8 @@ class Application extends \app\Instantiatable implements \mjolnir\types\Applicat
 			{
 				$layer->run();
 			}
-
+			
 			$channel->preprocess();
-			$channel->render();
 			$channel->postprocess();
 
 			return $channel->get('body', null);
@@ -57,7 +56,6 @@ class Application extends \app\Instantiatable implements \mjolnir\types\Applicat
 					}
 
 					$channel->preprocess();
-					$channel->render();
 					$channel->postprocess();
 
 					return $channel->get('body', null);

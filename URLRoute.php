@@ -95,34 +95,46 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 	/**
 	 * @return string url
 	 */
-	function url(array $params = null, $protocol = null)
+	function url(array $params = null, array $query = null, $protocol = null)
 	{
 		if ($params == null)
 		{
 			$params = [];
 		}
-		if ($this->url_regex)
+		
+		// relative protocol?
+		$url = ($protocol === null ? \app\CFS::config('mjolnir/base')['default.protocol'] : $protocol.'://');
+
+		if ($this->urlbase)
 		{
-			// relative protocol?
-			$url = ($protocol === null ? \app\CFS::config('mjolnir/base')['default.protocol'] : $protocol.'://');
-
-			if ($this->urlbase)
-			{
-				$url .= $this->urlbase;
-			}
-			else # no url base set
-			{
-				$base = \app\CFS::config('mjolnir/base');
-				$url .= $base['domain'].$base['path'];
-			}
-
-			// append the uri
-			return $url.static::generate_uri($this->url_pattern, $params);
+			$url .= $this->urlbase;
 		}
-		else # missing protocol; can't use canonical
+		else # no url base set
 		{
-			throw new \app\Exception
-				('Missing protocol; can not generate URL.');
+			$base = \app\CFS::config('mjolnir/base');
+			$url .= $base['domain'].$base['path'];
+		}
+
+		if ($query !== null)
+		{
+			$url = $url.static::generate_uri($this->url_pattern, $params);
+
+			// we do not convert & to &amp; since it's more intuitive to 
+			// process afterwards then have every url require that as an 
+			// extra parameter creating harder to track errors
+
+			if (\stripos($url, '?') === false)
+			{
+				return $url.'?'.\http_build_query($query);
+			}
+			else # pattern already contains query information
+			{
+				return $url.'&'.\http_build_query($query);
+			}
+		}
+		else # no query
+		{
+			return $url.static::generate_uri($this->url_pattern, $params);
 		}
 
 		return null;

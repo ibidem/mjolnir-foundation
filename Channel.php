@@ -24,7 +24,7 @@ class Channel extends \app\Instantiatable implements \mjolnir\types\Channel
 	 */
 	function render()
 	{
-		return $this->get('body', null);
+		// empty
 	}
 
 	/**
