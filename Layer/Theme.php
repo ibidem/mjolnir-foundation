@@ -27,9 +27,19 @@ class Layer_Theme extends \app\Instantiatable implements \mjolnir\types\Layer
 		$relaynode = $channel->get('relaynode');
 		$driver = $relaynode->get('theme.driver');
 
-		$themedriver = '\app\ThemeDriver_'.\app\Text::camelcase_from_dashcase($driver);
-		$themedriver = $themedriver::instance();
-		$themedriver->channel_is($channel);
+		try
+		{
+			$themedriver = '\app\ThemeDriver_'.\app\Text::camelcase_from_dashcase($driver);
+			$themedriver = $themedriver::instance();
+			$themedriver->channel_is($channel);
+		}
+		catch (\Exception $exception)
+		{
+			\mjolnir\log_exception($exception);
+			$this->channel()->set('http:status', '404 Not Found');
+			$this->channel()->set('body', null);
+			return;
+		}
 
 		try
 		{
