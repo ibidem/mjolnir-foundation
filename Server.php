@@ -96,7 +96,7 @@ class Server
 	}
 	
 	/**
-	 * @return string location identifier (null if not found)
+	 * @return string location identifier, or null if not found
 	 */
 	static function request_uri()
 	{
