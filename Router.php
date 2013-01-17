@@ -10,9 +10,47 @@
 class Router
 {
 	/**
+	 * ...
+	 */
+	static function process($key, callable $callback, $matcher = null, $url = null)
+	{
+		if ($url !== null)
+		{
+			$url = \app\Server::request_uri();
+		}
+		
+		$relays = \app\CFS::config('mjolnir/relays');
+
+		if (isset($relays[$key]))
+		{
+			// if enabled is not provided we assume true
+			if ( ! isset($relays[$key]['enabled']) || $relays[$key]['enabled'])
+			{
+				if (isset($relays[$key]['matcher']))
+				{
+					$matcher = $relays[$key]['matcher'];
+				}
+				else if ($matcher === null)
+				{
+					// no matcher provided; fail relay
+					return;
+				}
+				
+				$matcher->set('url', $url);
+
+				if ($matcher->check())
+				{
+					$callback($relays[$key], $key);
+					exit;
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Check all routes for match.
 	 */
-	static function check_all()
+	static function check_all_routes()
 	{
 		$routes = \app\CFS::config('routes');
 		
@@ -113,6 +151,37 @@ class Router
 				}
 			}
 		}
+		
+		// not really required, if execution passes past this method then
+		// routing should have failed and a there should be a 404 error thrown
+		// how it is possible the route handling has been altered and doesn't
+		// act like a switch, in which case this statement should correctly
+		// send the status of the function
+		return false;
+	}
+	
+	/**
+	 * @return boolean success?
+	 */
+	static function check_all_relays($relay_file = 'relays', $ext = EXT)
+	{
+		$relay_file = $relay_file.$ext;
+
+		$paths = \app\CFS::paths();
+		foreach ($paths as $path)
+		{
+			if (\file_exists($path.$relay_file))
+			{
+				include $path.$relay_file;
+			}
+		}
+
+		// not really required, if execution passes past this method then
+		// routing should have failed and a there should be a 404 error thrown
+		// how it is possible the route handling has been altered and doesn't
+		// act like a switch, in which case this statement should correctly
+		// send the status of the function
+		return false;
 	}
 
 	/**
@@ -157,6 +226,41 @@ class Router
 
 		return null;
 	}
+	
+	/**
+	 * @return \mjolnir\types\Linkable
+	 */
+	static function relay($key)
+	{
+		$relays = \app\CFS::config('mjolnir/relays');
+
+		if (isset($relays[$key]))
+		{
+			return $relays[$key]['matcher'];
+		}
+		else # not in relays, check application aliases
+		{
+			$aliases = \app\CFS::config('aliases');
+
+			if (isset($aliases['relay'][$key]))
+			{
+				if (isset($relays[$aliases['relay'][$key]]))
+				{
+					return $relays[$aliases['relay'][$key]]['matcher'];
+				}
+				else # invalid alias
+				{
+					throw new \app\Exception
+						('Invalid value ['.$aliases['relay'][$key].'] for alias ['.$key.']');
+				}
+			}
+		}
+
+		return null;
+	}
+	
+	// ------------------------------------------------------------------------
+	// Helpers
 
 	/**
 	 * @return \app\URLRoute
