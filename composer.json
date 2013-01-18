@@ -1,7 +1,7 @@
 {
 	"name": "mjolnir/foundation",
-	"version": "0.0",
-	"description": "Application, Layers, Exceptions, Routing and other foundation utilities, for work in Mjolnir.",
+	"version": "1.0",
+	"description": "Application composition structures: layers, exceptions, routing, etc.",
 	"keywords": [ ],
 	"homepage": "https://github.com/ibidem",
 	"type": "library",
