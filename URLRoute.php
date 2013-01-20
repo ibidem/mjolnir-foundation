@@ -101,7 +101,7 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 		{
 			$params = [];
 		}
-		
+
 		// relative protocol?
 		$url = ($protocol === null ? \app\CFS::config('mjolnir/base')['default.protocol'] : $protocol.'://');
 
@@ -119,8 +119,8 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 		{
 			$url = $url.static::generate_uri($this->url_pattern, $params);
 
-			// we do not convert & to &amp; since it's more intuitive to 
-			// process afterwards then have every url require that as an 
+			// we do not convert & to &amp; since it's more intuitive to
+			// process afterwards then have every url require that as an
 			// extra parameter creating harder to track errors
 
 			if (\stripos($url, '?') === false)
