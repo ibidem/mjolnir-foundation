@@ -4,7 +4,7 @@
 
 		// general purpose stack with domain access control, header processing
 		// and a typical MVC structure
-		'mvc' => function ($relay, $target)
+		'public' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay);
 
@@ -15,6 +15,7 @@
 					(
 						\app\Layer_Access::instance(),
 						\app\Layer_HTTP::instance(),
+						\app\Layer_Theme::instance(),
 						\app\Layer_MVC::instance()
 					)
 					->channel_is($channel)
@@ -87,7 +88,7 @@
 			},
 					
 		// stack used to resolve relay'ed routes with theme drivers attached
-		'theme' => function ($relay, $target)
+		'resource' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay);
 
@@ -97,7 +98,7 @@
 				echo \app\Application::stack
 					(
 						\app\Layer_HTTP::instance(),
-						\app\Layer_Theme::instance()
+						\app\Layer_Resource::instance()
 					)
 					->channel_is($channel)
 					->recover_exceptions()

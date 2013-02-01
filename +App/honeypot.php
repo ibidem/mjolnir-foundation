@@ -20,6 +20,7 @@ class Layer_JSend extends \mjolnir\foundation\Layer_JSend { /** @return \mjolnir
 class Layer_MVC extends \mjolnir\foundation\Layer_MVC { /** @return \mjolnir\foundation\Layer_MVC */ static function instance() { return parent::instance(); } }
 class Layer_Theme extends \mjolnir\foundation\Layer_Theme { /** @return \mjolnir\foundation\Layer_Theme */ static function instance() { return parent::instance(); } }
 class Notice extends \mjolnir\foundation\Notice { /** @return \mjolnir\foundation\Notice */ static function instance() { return parent::instance(); } }
+class Puppet extends \mjolnir\foundation\Puppet { /** @return \mjolnir\foundation\Puppet */ static function instance() { return parent::instance(); } }
 class RelayNode extends \mjolnir\foundation\RelayNode { /** @return \mjolnir\foundation\RelayNode */ static function instance(array $source = null) { return parent::instance($source); } }
 class Router extends \mjolnir\foundation\Router {}
 class Server extends \mjolnir\foundation\Server {}

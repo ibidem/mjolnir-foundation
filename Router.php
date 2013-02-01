@@ -142,6 +142,7 @@ class Router
 								'controller' =>  static::resolve_controller_name($binding),
 								'action' => $default_action,
 								'prefix' => $prefix,
+								'target' => $key,
 							);
 
 						// execute
