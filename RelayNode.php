@@ -20,14 +20,17 @@ class RelayNode extends \app\Instantiatable implements \mjolnir\types\RelayNode
 	{
 		$instance = parent::instance();
 
-		$instance->metadata_is($source);
-		
-		$context = $source['matcher']->context();
-		if ($context !== null)
+		if ($source)
 		{
-			foreach ($context as $key => $value)
+			$instance->metadata_is($source);
+			$context = $source['matcher']->context();
+
+			if ($context !== null)
 			{
-				$instance->set($key, $value);
+				foreach ($context as $key => $value)
+				{
+					$instance->set($key, $value);
+				}
 			}
 		}
 

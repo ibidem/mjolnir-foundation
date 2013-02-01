@@ -7,7 +7,7 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \app\Trait_Savable
+class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \mjolnir\types\Savable
 {
 	use \app\Trait_Meta;
 	use \app\Trait_Savable;

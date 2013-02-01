@@ -2,12 +2,12 @@
 
 /**
  * @package    mjolnir
- * @category   Controller
+ * @category   Foundation
  * @author     Ibidem Team
- * @copyright  (c) 2012, Ibidem Team
+ * @copyright  (c) 2012, 2013, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Controller_Web extends \app\Instantiatable implements \mjolnir\types\Controller
+class Controller_Contextual extends \app\Instantiatable implements \mjolnir\types\Controller
 {
 	use \app\Trait_Controller
 		{
