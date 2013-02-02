@@ -10,27 +10,27 @@
 abstract class Puppet extends \app\Instantiatable implements \mjolnir\types\Puppet
 {
 	use \app\Trait_Puppet;
-	
+
 	#
 	# Implementations extending this class should have a static grammar property
 	# with an array in the format [singular] or [singular, plural] where names
 	# are in all lower case and multi word names use spaces to delimit words.
 	#
-	
+
 	/**
 	 * @return string sungular name for puppet
 	 */
-	static function sigular()
+	static function singular()
 	{
 		return static::$grammar[0];
 	}
-	
+
 	/**
 	 * @return string sungular name for puppet
 	 */
 	static function plural()
 	{
-		return isset(static::$grammar[1]) ? static::$grammar[1] : static::singualarname().'s';
+		return isset(static::$grammar[1]) ? static::$grammar[1] : static::singular().'s';
 	}
 
 } # class

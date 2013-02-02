@@ -2,7 +2,7 @@
 
 /**
  * Resource layer used primarily in theming.
- * 
+ *
  * @package    mjolnir
  * @category   Foundation
  * @author     Ibidem Team
@@ -22,9 +22,11 @@ class Layer_Theme extends \app\Instantiatable implements \mjolnir\types\Layer
 
 		// we register ourselves in the channel
 		$channel->set('layer:theme', $this);
-		
-		$channel->set('theme:path', \app\Theme::path());
-		$channel->set('theme:name', \app\Theme::title());
+
+		$theme = \app\Theme::instance()
+			->channel_is($channel);
+
+		$channel->set('theme', $theme);
 	}
 
 } # class
