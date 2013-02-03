@@ -15,6 +15,7 @@
 					(
 						\app\Layer_Access::instance(),
 						\app\Layer_HTTP::instance(),
+						\app\Layer_HTML::instance(),
 						\app\Layer_Theme::instance(),
 						\app\Layer_MVC::instance()
 					)
@@ -43,8 +44,8 @@
 					->render();
 			},
 
-		// like the mvc stack only html's head section, scripts and so on is
-		// processed at the domain level rather then the MVC level
+		// like the public stack only html's head section, scripts and so on are
+		// processed at the MVC level
 		'html' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay);
@@ -56,7 +57,7 @@
 					(
 						\app\Layer_Access::instance(),
 						\app\Layer_HTTP::instance(),
-						\app\Layer_HTML::instance(),
+						\app\Layer_Theme::instance(),
 						\app\Layer_MVC::instance()
 					)
 					->channel_is($channel)
@@ -86,7 +87,7 @@
 					->recover_exceptions()
 					->render();
 			},
-					
+
 		// stack used to resolve relay'ed routes with theme drivers attached
 		'resource' => function ($relay, $target)
 			{

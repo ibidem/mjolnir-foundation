@@ -38,7 +38,7 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 	/**
 	 * ...
 	 */
-	function recover ()
+	function recover()
 	{
 		$this->set('crawlers', false);
 	}
@@ -52,19 +52,11 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 	}
 
 	/**
-	 * ...
-	 */
-	protected function wrap(\mjolnir\types\Channel $channel)
-	{
-		$channel->set('body', $this->html_before($channel).$channel->get('body', '').$this->html_after());
-	}
-
-	/**
 	 * @return string
 	 */
 	protected function html_before(\mjolnir\types\Channel $channel)
 	{
-		$html_before = $this->get('doctype')."\n";
+		$html_before = $this->get('doctype', '<!DOCTYPE html>')."\n";
 		// appcache manifest
 		if ($this->get('appcache') !== null)
 		{
@@ -89,12 +81,16 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		// Make a DNS handshake with a foreign domain, so the connection goes
 		// faster when the user eventually needs to access it.
 		// eg. //ajax.googleapis.com
-		foreach ($this->get('prefetch_domains') as $prefetch_domain)
+		foreach ($this->get('prefetch_domains', []) as $prefetch_domain)
 		{
 			'<link rel="dns-prefetch" href="'.$prefetch_domain.'">';
 		}
 		// mobile viewport optimized: h5bp.com/viewport
-		$html_before .= '<meta name="viewport" content="'.$this->get('viewport').'">';
+		$viewport = $this->get('viewport', null);
+		if ($viewport !== null)
+		{
+			$html_before .= '<meta name="viewport" content="'.$viewport.'">';
+		}
 		// helps a little with compatibility; unnecesary \w .htaccess
 		$html_before .= '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">';
 		// standard favicon path
@@ -119,7 +115,7 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		// add fix for IE
 		$html_before .= '<!--[if lt IE 9)><script src="//'.$mjolnir_base['domain'].$mjolnir_base['path'].'media/static/html5shiv.js"></script><![endif)-->';
 		// stylesheets
-		foreach ($this->get('stylesheets') as $style)
+		foreach ($this->get('stylesheet', []) as $style)
 		{
 			$html_before .= '<link rel="stylesheet" type="'.$style['type'].'" href="'.$style['href'].'">';
 		}
@@ -182,7 +178,7 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		}
 
 		// block search engines from viewing the page
-		if ($this->get('crawlers'))
+		if ($this->get('crawlers', true))
 		{
 			$html_before .= '<meta name="robots" content="index, follow" />';
 		}
@@ -239,17 +235,16 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 			$html_before .= '<meta name="msapplication-starturl" content="'.$this->get('application_starturl').'">';
 		}
 
-		$scripts = $this->get('scripts');
+		$scripts = $this->get('script');
 		if ( ! empty($scripts))
 		{
 			// javascript loader
 			$html_before .= '<script type="text/javascript" src="'.\app\CFS::config('mjolnir/html')['js-loader'].'"></script>';
 		}
 
-		$head_scripts = $this->get('head_scripts');
-		foreach ($head_scripts as $script)
+		foreach ($this->get('headscript', []) as $script)
 		{
-			$html_before .= '<script type="text/javascript" src="'.\addslashes($script).'"></script>';
+			$html_before .= '<script type="'.$script['type'].'" src="'.\addslashes($script['src']).'"></script>';
 		}
 
 		$extra_markup = $this->get('extra_markup');
@@ -262,9 +257,9 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		}
 
 		// close head section
-		$html_before .= '</head><body class="'.\implode(' ', $this->get('body_classes')).'">';
+		$html_before .= '</head><body class="'.\implode(' ', $this->get('body_classes', [])).'">';
 		// css switch for more streamline style transitions
-		if ($this->get('javascript_switch'))
+		if ($this->get('javascriptswitch'))
 		{
 			$html_before .= '<script type="text/javascript">document.body.id = "javascript-enabled";</script>';
 		}
@@ -273,24 +268,38 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		return $html_before;
 	}
 
+	// ------------------------------------------------------------------------
+	// Helpers
+
 	/**
-	 * Closing html.
-	 *
 	 * @return string
 	 */
 	protected function html_after()
 	{
 		$html_after = "\n\n";
-		$scripts = $this->get('scripts');
+		$scripts = $this->get('script', []);
 		if ( ! empty($scripts))
 		{
-			$html_after .= '<script type="text/javascript">yepnope({ load: [';
-			$html_after .= '\''.\addslashes(\array_shift($scripts)).'\'';
+			$javascripts = [];
 			foreach ($scripts as $script)
+			{
+				if ($script['type'] === 'application/javascript' || $script['type'] === 'text/javascript' || $script['type'] === 'application/x-javascript')
+				{
+					$javascripts[] = $script['src'];
+				}
+				else # other type of script
+				{
+					$html_after .= '<script type="'.$script['type'].'" src="'.$script['src'].'"></script>';
+				}
+			}
+
+			$html_after .= '<script type="text/javascript">yepnope({ load: [';
+			$html_after .= '\''.\addslashes(\array_shift($javascripts)).'\'';
+			foreach ($javascripts as $script)
 			{
 				$html_after .= ', \''.\addslashes($script).'\'';
 			}
-			$html_after .= ') });</script>';
+			$html_after .= '] });</script>';
 		}
 
 		$extra_footer_markup = $this->get('extra_footer_markup');
@@ -305,6 +314,14 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		$html_after .= "</body></html>\n";
 
 		return $html_after;
+	}
+
+	/**
+	 * ...
+	 */
+	protected function wrap(\mjolnir\types\Channel $channel)
+	{
+		$channel->set('body', $this->html_before($channel).$channel->get('body', '').$this->html_after());
 	}
 
 } # class

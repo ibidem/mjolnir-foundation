@@ -18,7 +18,7 @@ class Router
 		{
 			$url = \app\Server::request_uri();
 		}
-		
+
 		$relays = \app\CFS::config('mjolnir/relays');
 
 		if (isset($relays[$key]))
@@ -35,7 +35,7 @@ class Router
 					// no matcher provided; fail relay
 					return;
 				}
-				
+
 				$matcher->set('url', $url);
 
 				if ($matcher->check())
@@ -46,14 +46,16 @@ class Router
 			}
 		}
 	}
-	
+
 	/**
 	 * Check all routes for match.
 	 */
 	static function check_all_routes()
 	{
+		$benchmark = \app\Benchmark::token('routes', 'Application', true);
+
 		$routes = \app\CFS::config('routes');
-		
+
 		$url = \app\Server::request_uri();
 
 		// format: [ key, regex, allowed methods ]
@@ -145,6 +147,8 @@ class Router
 								'target' => $key,
 							);
 
+						\app\Benchmark::stop($benchmark);
+
 						// execute
 						$route_stacks[$format]($relay, $key);
 						exit;
@@ -152,7 +156,9 @@ class Router
 				}
 			}
 		}
-		
+
+		\app\Benchmark::stop($benchmark);
+
 		// not really required, if execution passes past this method then
 		// routing should have failed and a there should be a 404 error thrown
 		// how it is possible the route handling has been altered and doesn't
@@ -160,12 +166,14 @@ class Router
 		// send the status of the function
 		return false;
 	}
-	
+
 	/**
 	 * @return boolean success?
 	 */
 	static function check_all_relays($relay_file = 'relays', $ext = EXT)
 	{
+		$benchmark = \app\Benchmark::token(__METHOD__, 'Application', true);
+
 		$relay_file = $relay_file.$ext;
 
 		$paths = \app\CFS::paths();
@@ -227,7 +235,7 @@ class Router
 
 		return null;
 	}
-	
+
 	/**
 	 * @return \mjolnir\types\Linkable
 	 */
@@ -259,7 +267,7 @@ class Router
 
 		return null;
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Helpers
 
