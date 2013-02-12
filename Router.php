@@ -14,7 +14,7 @@ class Router
 	 */
 	static function process($key, callable $callback, $matcher = null, $url = null)
 	{
-		if ($url !== null)
+		if ($url === null)
 		{
 			$url = \app\Server::request_uri();
 		}
@@ -142,7 +142,8 @@ class Router
 							(
 								'matcher' => $matcher,
 								'controller' =>  static::resolve_controller_name($binding),
-								'action' => $default_action,
+								'action' => null,
+								'default.action' => $default_action,
 								'prefix' => $prefix,
 								'target' => $key,
 							);
