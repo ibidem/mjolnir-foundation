@@ -23,7 +23,15 @@ class RelayNode extends \app\Instantiatable implements \mjolnir\types\RelayNode
 		if ($source)
 		{
 			$instance->metadata_is($source);
-			$context = $source['matcher']->context();
+			
+			if ( ! \is_bool($source['matcher']))
+			{
+				$context = $source['matcher']->context();
+			}
+			else # no context
+			{
+				$context = null;
+			}
 
 			if ($context !== null)
 			{
