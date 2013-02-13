@@ -220,7 +220,7 @@ class Server
 	/**
 	 * @return string
 	 */
-	static function url_dashboard(array &$user)
+	static function url_homepage(array &$user)
 	{
 		$server = \app\CFS::config('mjolnir/server');
 		if (isset($server['dashboard']))
