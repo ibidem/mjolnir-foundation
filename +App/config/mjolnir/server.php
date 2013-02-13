@@ -1,4 +1,8 @@
 <?php return array
 	(
-		'frontend' => '/',
+		'frontpage' => '/',
+		'dashboard' => function (array &$user)
+			{
+				return \app\Server::url_frontpage();
+			},
 	);

@@ -217,4 +217,27 @@ class Server
 		}
 	}
 	
+	/**
+	 * @return string
+	 */
+	static function url_dashboard(array &$user)
+	{
+		$server = \app\CFS::config('mjolnir/server');
+		if (isset($server['dashboard']))
+		{
+			if (\is_string($server['dashboard']))
+			{
+				return $server['dashboard'];
+			}
+			else # assume function
+			{
+				return $server['dashboard']($user);
+			}
+		}
+		else # redirect to frontpage
+		{
+			return \app\Server::url_frontpage();
+		}
+	}
+	
 } # class
