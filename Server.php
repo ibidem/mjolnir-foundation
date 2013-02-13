@@ -68,29 +68,30 @@ class Server
 	}
 	
 	/**
-	 * @param string url
-	 * @param int 303 (see other), 301 (permament), 307 (temporary)
+	 * Redirect type can be 303 (see other), 301 (permament), 307 (temporary)
 	 */
 	static function redirect($url, $type = 303)
-	{
+	{	
+		if (empty($url))
+		{
+			throw new \app\Exception('No URL provided for redirect.');
+		}
+		
 		if ($type === 303)
 		{
-			\app\GlobalEvent::fire('http:status', 'HTTP/1.1 303 See Other');
+			\header('HTTP/1.1 303 See Other');
 		}
 		else if ($type == 301)
 		{
-			\app\GlobalEvent::fire('http:status', 'HTTP/1.1 301 Moved Permanently');
+			\header('HTTP/1.1 301 Moved Permanently');
 		}
 		else if ($type == 307)
 		{
-			\app\GlobalEvent::fire('http:status', 'HTTP/1.1 307 Temporary Redirect');
-		}
+			\header('HTTP/1.1 307 Temporary Redirect');
+		}	
 		
 		// redirect to...
-		\app\GlobalEvent::fire('http:attributes', [ 'location' => $url ]);
-		
-		// perform the redirect
-		\app\GlobalEvent::fire('http:send-headers');
+		\header("Location: $url");
 		
 		exit;
 	}
@@ -181,4 +182,39 @@ class Server
 		return $detected_uri = \trim($uri, '/');
 	}
 
+	/**
+	 * @return string
+	 */
+	static function url_frontpage()
+	{
+		$frontpage = \app\CFS::config('mjolnir/server')['frontpage'];
+		
+		if (\is_string($frontpage))
+		{
+			// has protocol?
+			if (\stripos($frontpage, '//') !== false)
+			{
+				return $frontpage;
+			}
+			else # assume relative
+			{
+				$base = \app\CFS::config('mjolnir/base');
+				return $base['protocol'].$base['domain'].$base['path'].\ltrim($frontpage, '/');
+			}
+		}
+		else if (\is_array($frontpage))
+		{
+			$key = $frontpage[0];
+			$params = isset($frontpage[1]) ? $frontpage[1] : null;
+			$query = isset($frontpage[2]) ? $frontpage[2] : null;
+			$protocol = isset($frontpage[3]) ? $frontpage[3] : null;
+			
+			return \app\URL::href($key, $params, $query, $protocol);
+		}
+		else # callable
+		{
+			return $frontpage();
+		}
+	}
+	
 } # class
