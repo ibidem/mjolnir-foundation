@@ -223,15 +223,15 @@ class Server
 	static function url_homepage(array &$user)
 	{
 		$server = \app\CFS::config('mjolnir/server');
-		if (isset($server['dashboard']))
+		if (isset($server['homepage']))
 		{
-			if (\is_string($server['dashboard']))
+			if (\is_string($server['homepage']))
 			{
-				return $server['dashboard'];
+				return $server['homepage'];
 			}
 			else # assume function
 			{
-				return $server['dashboard']($user);
+				return $server['homepage']($user);
 			}
 		}
 		else # redirect to frontpage
