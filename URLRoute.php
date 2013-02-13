@@ -103,7 +103,7 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 		}
 
 		// relative protocol?
-		$url = ($protocol === null ? \app\CFS::config('mjolnir/base')['default.protocol'] : $protocol.'://');
+		$url = ($protocol === null ? \app\CFS::config('mjolnir/base')['protocol'] : $protocol.'://');
 
 		if ($this->urlbase)
 		{
@@ -161,6 +161,12 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 			}
 
 			$context[$key] = $value;
+		}
+		
+		if (\strpos($this->url_pattern, '<action>') !== false && ! isset($context['action']))
+		{
+			// default context action is always index
+			$context['action'] = 'index';
 		}
 
 		return $context;
