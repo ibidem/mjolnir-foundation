@@ -18,7 +18,7 @@ abstract class Puppet extends \app\Instantiatable implements \mjolnir\types\Pupp
 	#
 
 	/**
-	 * @return string sungular name for puppet
+	 * @return string singular name for puppet
 	 */
 	static function singular()
 	{
@@ -26,11 +26,19 @@ abstract class Puppet extends \app\Instantiatable implements \mjolnir\types\Pupp
 	}
 
 	/**
-	 * @return string sungular name for puppet
+	 * @return string plural name for puppet
 	 */
 	static function plural()
 	{
 		return isset(static::$grammar[1]) ? static::$grammar[1] : static::singular().'s';
+	}
+	
+	/**
+	 * @return string corresponding model
+	 */
+	static function modelclass()
+	{
+		return '\app\Model_'.\app\Text::camelcase_from(static::singular());
 	}
 
 } # class
