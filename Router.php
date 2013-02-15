@@ -85,7 +85,7 @@ class Router
 				// retrieve the allowed methods
 				if ( ! isset($route_info[2]))
 				{
-					$methods = ['GET'];
+					$methods = ['GET', 'POST'];
 				}
 				else if (\is_string($route_info[2]))
 				{
