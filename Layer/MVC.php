@@ -39,7 +39,7 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 		$action = $relaynode->get('action', null);
 		if ($action !== null) 
 		{
-			$action = $relaynode->get('prefix', 'action_').$action;
+			$action = $relaynode->get('prefix', 'action_').\str_replace('-', '_', $action);
 		}
 		else # no action
 		{
