@@ -62,9 +62,13 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 		{
 			$channel->set('body', $response);
 		}
-		else # Renderable object
+		else if (\is_a($response, '\mjolnir\types\Renderable')) # Renderable object
 		{
 			$channel->set('body', $response->render());
+		}
+		else # misc contents
+		{
+			$channel->set('body', $response);
 		}
 		
 		// we perform any controller postprocessing; this should happen on the

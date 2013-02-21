@@ -80,7 +80,8 @@
 					(
 						\app\Layer_Access::instance(),
 						\app\Layer_HTTP::instance(),
-						\app\Layer_JSend::instance()
+						\app\Layer_JSend::instance(),
+						\app\Layer_MVC::instance()
 					)
 					->channel_is($channel)
 					->recover_exceptions()
