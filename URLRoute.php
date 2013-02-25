@@ -103,7 +103,14 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 		}
 
 		// relative protocol?
-		$url = ($protocol === null ? \app\CFS::config('mjolnir/base')['protocol'] : $protocol.'://');
+		if ($protocol !== false)
+		{
+			$url = ($protocol === null ? \app\CFS::config('mjolnir/base')['protocol'] : $protocol.'://');
+		}
+		else # ommit protocol
+		{
+			$url = '';
+		}
 
 		if ($this->urlbase)
 		{
