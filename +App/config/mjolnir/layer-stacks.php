@@ -7,7 +7,7 @@
 		'public' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay)
-					->set('target', $target);
+					->set('relaykey', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
@@ -31,7 +31,7 @@
 		'log' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay)
-					->set('target', $target);
+					->set('relaykey', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
@@ -51,7 +51,7 @@
 		'html' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay)
-					->set('target', $target);
+					->set('relaykey', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
@@ -75,7 +75,7 @@
 		'jsend' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay)
-					->set('target', $target);
+					->set('relaykey', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
@@ -96,7 +96,7 @@
 		'resource' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay)
-					->set('target', $target);
+					->set('relaykey', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
