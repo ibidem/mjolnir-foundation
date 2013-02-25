@@ -220,8 +220,13 @@ class Server
 	/**
 	 * @return string
 	 */
-	static function url_homepage(array &$user)
+	static function url_homepage(array &$user = null)
 	{
+		if ($user === null)
+		{
+			$user = \app\Auth::userinfo();
+		}
+		
 		$server = \app\CFS::config('mjolnir/server');
 		if (isset($server['homepage']))
 		{
