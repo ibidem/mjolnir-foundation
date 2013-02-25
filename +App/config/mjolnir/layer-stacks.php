@@ -6,15 +6,16 @@
 		// and a typical MVC structure
 		'public' => function ($relay, $target)
 			{
-				$relaynode = \app\RelayNode::instance($relay);
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('target', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
 
 				echo \app\Application::stack
 					(
-						\app\Layer_Access::instance(),
 						\app\Layer_HTTP::instance(),
+						\app\Layer_Access::instance(),
 						\app\Layer_HTML::instance(),
 						\app\Layer_Theme::instance(),
 						\app\Layer_MVC::instance()
@@ -29,7 +30,8 @@
 		// instead of this one
 		'log' => function ($relay, $target)
 			{
-				$relaynode = \app\RelayNode::instance($relay);
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('target', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
@@ -48,15 +50,16 @@
 		// processed at the MVC level
 		'html' => function ($relay, $target)
 			{
-				$relaynode = \app\RelayNode::instance($relay);
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('target', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
 
 				echo \app\Application::stack
 					(
-						\app\Layer_Access::instance(),
 						\app\Layer_HTTP::instance(),
+						\app\Layer_Access::instance(),
 						\app\Layer_Theme::instance(),
 						\app\Layer_MVC::instance()
 					)
@@ -71,15 +74,16 @@
 		// behaviour
 		'jsend' => function ($relay, $target)
 			{
-				$relaynode = \app\RelayNode::instance($relay);
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('target', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);
 
 				echo \app\Application::stack
 					(
-						\app\Layer_Access::instance(),
 						\app\Layer_HTTP::instance(),
+						\app\Layer_Access::instance(),
 						\app\Layer_JSend::instance(),
 						\app\Layer_MVC::instance()
 					)
@@ -91,7 +95,8 @@
 		// stack used to resolve relay'ed routes with theme drivers attached
 		'resource' => function ($relay, $target)
 			{
-				$relaynode = \app\RelayNode::instance($relay);
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('target', $target);
 
 				$channel = \app\Channel::instance()
 					->set('relaynode', $relaynode);

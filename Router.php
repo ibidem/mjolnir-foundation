@@ -310,7 +310,7 @@ class Router
 	 * @return string
 	 */
 	protected static function translate_pattern($pattern)
-	{		
+	{
 		if (\app\Lang::targetlang() !== 'en-US')
 		{
 			// load route translations
