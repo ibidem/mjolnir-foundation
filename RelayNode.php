@@ -14,7 +14,7 @@ class RelayNode extends \app\Instantiatable implements \mjolnir\types\RelayNode
 	/**
 	 * The source from a configuration can be passed to be used as metadata.
 	 * 
-	 * @return \mjolnir\types\RelayNode
+	 * @return static
 	 */
 	static function instance(array $source = null)
 	{

@@ -54,7 +54,7 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 	protected $url_regex = null;
 
 	/**
-	 * @return \mjolnir\foundation\URLRoute $this
+	 * @return static $this
 	 */
 	function urlpattern($pattern, array $parameter_regex = null)
 	{

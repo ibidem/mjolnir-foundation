@@ -23,7 +23,7 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \mjolni
 	 * 
 	 * Don't forget to save the notice.
 	 * 
-	 * @return \app\Notice
+	 * @return static
 	 */
 	static function make($body)
 	{

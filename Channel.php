@@ -36,7 +36,7 @@ class Channel extends \app\Instantiatable implements \mjolnir\types\Channel
 	}
 
 	/**
-	 * @return \app\Channel $this
+	 * @return static $this
 	 */
 	function status_is($status)
 	{
