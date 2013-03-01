@@ -1,9 +1,10 @@
 <?php return array
 	(
-		# [!!] these names also act as extentions in routing! keep it simple
+		# [!!] these names also act as extentions in routing and prefixes in 
+		# controllers! we recomend you keep them simple
 
 		// general purpose stack with domain access control, header processing
-		// and a typical MVC structure
+		// and a typical MVC structure (public here means "people")
 		'public' => function ($relay, $target)
 			{
 				$relaynode = \app\RelayNode::instance($relay)
@@ -85,6 +86,27 @@
 						\app\Layer_HTTP::instance(),
 						\app\Layer_Access::instance(),
 						\app\Layer_JSend::instance(),
+						\app\Layer_MVC::instance()
+					)
+					->channel_is($channel)
+					->recover_exceptions()
+					->render();
+			},
+					
+		// basic json
+		'json' => function ($relay, $target)
+			{
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('relaykey', $target);
+
+				$channel = \app\Channel::instance()
+					->set('relaynode', $relaynode);
+
+				echo \app\Application::stack
+					(
+						\app\Layer_HTTP::instance(),
+						\app\Layer_Access::instance(),
+						\app\Layer_JSON::instance(),
 						\app\Layer_MVC::instance()
 					)
 					->channel_is($channel)
