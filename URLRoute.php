@@ -169,7 +169,7 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 
 			$context[$key] = $value;
 		}
-		
+
 		if (\strpos($this->url_pattern, '<action>') !== false && ! isset($context['action']))
 		{
 			// default context action is always index

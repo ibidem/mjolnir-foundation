@@ -1,18 +1,22 @@
-<?php return array
-	(			
+<?php namespace app;
+
+$baseconfig = CFS::config('mjolnir/base');
+
+return array
+	(
 		'mjolnir' => array
 			(
 				'config' => array
 					(
 						'base' => array
 							(
-								'lang' => \app\Lang::targetlang(),
-								'langid' => \app\Lang::idlang(\app\Lang::targetlang()),
-								'urlbase' => '//'.\app\CFS::config('mjolnir/base')['domain'].\app\CFS::config('mjolnir/base')['path'],
-								'urldomain' => \app\CFS::config('mjolnir/base')['domain'],
-								'urlpath' => \app\CFS::config('mjolnir/base')['path'],
+								'lang' => Lang::targetlang(),
+								'langid' => Lang::idlang(\app\Lang::targetlang()),
+								'urlbase' => '//'.$baseconfig['domain'].$baseconfig['path'],
+								'urldomain' => $baseconfig['domain'],
+								'urlpath' => $baseconfig['path'],
 							),
 					)
 			),
-	
+
 	); # config

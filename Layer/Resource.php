@@ -2,7 +2,7 @@
 
 /**
  * Resource layer used primarily in theming.
- * 
+ *
  * @package    mjolnir
  * @category   Foundation
  * @author     Ibidem Team
@@ -91,9 +91,9 @@ class Layer_Resource extends \app\Instantiatable implements \mjolnir\types\Layer
 		{
 			$themeconfig = include $themefile;
 			$globalconfig = \app\CFS::config('mjolnir/themes');
-			
+
 			$this->channel()->set('themepath', $themepath);
-			
+
 			return \app\Arr::merge($themeconfig, $globalconfig);
 		}
 		else # no theme configuration

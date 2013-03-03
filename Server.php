@@ -25,13 +25,13 @@ class Server
 			return 'GET';
 		}
 	}
-	
+
 	/**
-	 * @return string 
+	 * @return string
 	 */
 	static function client_ip()
 	{
-		if 
+		if
 		(
 			isset($_SERVER['HTTP_X_FORWARDED_FOR'])
 			&& isset($_SERVER['REMOTE_ADDR'])
@@ -45,7 +45,7 @@ class Server
 
 			return \array_shift($client_ips);
 		}
-		elseif 
+		elseif
 		(
 			isset($_SERVER['HTTP_CLIENT_IP'])
 			&& isset($_SERVER['REMOTE_ADDR'])
@@ -63,20 +63,20 @@ class Server
 			// the remote IP address
 			return $_SERVER['REMOTE_ADDR'];
 		}
-		
+
 		return '0.0.0.0';
 	}
-	
+
 	/**
 	 * Redirect type can be 303 (see other), 301 (permament), 307 (temporary)
 	 */
 	static function redirect($url, $type = 303)
-	{	
+	{
 		if (empty($url))
 		{
 			throw new \app\Exception('No URL provided for redirect.');
 		}
-		
+
 		if ($type === 303)
 		{
 			\header('HTTP/1.1 303 See Other');
@@ -88,14 +88,14 @@ class Server
 		else if ($type == 307)
 		{
 			\header('HTTP/1.1 307 Temporary Redirect');
-		}	
-		
+		}
+
 		// redirect to...
 		\header("Location: $url");
-		
+
 		exit;
 	}
-	
+
 	/**
 	 * @return string location identifier, or null if not found
 	 */
@@ -163,7 +163,7 @@ class Server
 				$uri = (string) \substr($uri, \strlen($url_base));
 			}
 		}
-		
+
 		// remove path
 		$base_config = \app\CFS::config('mjolnir/base');
 		if (\substr($uri, 0, \strlen($base_config['path']) ) == $base_config['path'])
@@ -188,7 +188,7 @@ class Server
 	static function url_frontpage()
 	{
 		$frontpage = \app\CFS::config('mjolnir/server')['frontpage'];
-		
+
 		if (\is_string($frontpage))
 		{
 			// has protocol?
@@ -208,7 +208,7 @@ class Server
 			$params = isset($frontpage[1]) ? $frontpage[1] : null;
 			$query = isset($frontpage[2]) ? $frontpage[2] : null;
 			$protocol = isset($frontpage[3]) ? $frontpage[3] : null;
-			
+
 			return \app\URL::href($key, $params, $query, $protocol);
 		}
 		else # callable
@@ -216,17 +216,17 @@ class Server
 			return $frontpage();
 		}
 	}
-	
+
 	/**
 	 * @return string
 	 */
-	static function url_homepage(array &$user = null)
+	static function url_homepage(array $user = null)
 	{
 		if ($user === null)
 		{
 			$user = \app\Auth::userinfo();
 		}
-		
+
 		$server = \app\CFS::config('mjolnir/server');
 		if (isset($server['homepage']))
 		{
@@ -244,5 +244,5 @@ class Server
 			return \app\Server::url_frontpage();
 		}
 	}
-	
+
 } # class

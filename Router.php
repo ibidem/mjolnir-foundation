@@ -12,7 +12,7 @@ class Router
 	/**
 	 * ...
 	 */
-	static function process($key, callable $callback, $matcher = null, $url = null)
+	static function process($key, callable &$callback, $matcher = null, $url = null)
 	{
 		if ($url === null)
 		{
