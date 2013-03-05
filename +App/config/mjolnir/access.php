@@ -10,7 +10,7 @@
 								'mjolnir:mockup-form.route',
 								'mjolnir:mockup-errors.route'
 							)
-							->all_parameters(),
+							->unrestricted(),
 					),
 			),
 	);
