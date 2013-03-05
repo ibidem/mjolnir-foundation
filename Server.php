@@ -224,7 +224,7 @@ class Server
 	{
 		if ($user === null)
 		{
-			$user = \app\Auth::userinfo();
+			$user = \app\Auth::info();
 		}
 
 		$server = \app\CFS::config('mjolnir/server');
