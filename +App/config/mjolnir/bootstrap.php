@@ -12,7 +12,7 @@ return array
 							(
 								'lang' => Lang::targetlang(),
 								'langid' => Lang::idlang(\app\Lang::targetlang()),
-								'urlbase' => '//'.$baseconfig['domain'].$baseconfig['path'],
+								'urlbase' => $baseconfig['protocol'].$baseconfig['domain'].$baseconfig['path'],
 								'urldomain' => $baseconfig['domain'],
 								'urlpath' => $baseconfig['path'],
 							),

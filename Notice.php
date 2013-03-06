@@ -7,8 +7,9 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \mjolnir\types\Savable
+class Notice extends \app\Instantiatable implements \mjolnir\types\Renderable, \mjolnir\types\Meta, \mjolnir\types\Savable
 {
+	use \app\Trait_Renderable;
 	use \app\Trait_Meta;
 	use \app\Trait_Savable;
 
@@ -17,6 +18,17 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \mjolni
 	 */
 	protected static $notices = null;
 
+	/**
+	 * Initialize the notices.
+	 */
+	protected static function init()
+	{
+		if (static::$notices === null)
+		{
+			static::$notices = \app\Session::get('mjolnir:notices', []);
+		}
+	}
+	
 	/**
 	 * Creates a notice for the user. You can grab the notice(s) via
 	 * `Notice::all()`.
@@ -52,6 +64,9 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \mjolni
 		return $notices;
 	}
 
+	// ------------------------------------------------------------------------
+	// interface: Savable
+
 	/**
 	 * Save the notice.
 	 *
@@ -67,7 +82,7 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \mjolni
 
 		return $this;
 	}
-
+	
 	/**
 	 * Notices that don't reach the user can cause a lot of trouble.
 	 */
@@ -78,17 +93,24 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Meta, \mjolni
 			\mjolnir\log('Error', 'You have a unsaved notice with the message: '.$this->get('body', null));
 		}
 	}
+	
+	// ------------------------------------------------------------------------
+	// interface: Renderable
 
 	/**
-	 * Initialize the notices.
+	 * @return string
 	 */
-	protected static function init()
+	function render()
 	{
-		if (static::$notices === null)
-		{
-			static::$notices = \app\Session::get('mjolnir:notices', []);
-		}
+		return $this->get('body', '');
 	}
-
+	
+	/**
+	 * @return string
+	 */
+	function __toString()
+	{
+		return $this->render();
+	}
 
 } # class
