@@ -65,6 +65,12 @@ class Router
 			$pattern = static::translate_pattern($pattern);
 
 			$pattern = \trim($pattern, '/');
+			
+			// remove identifier/comment segment
+			if (($c = \strpos($pattern, '#')) !== false)
+			{
+				$pattern = \substr($pattern, $c);
+			}
 
 			if ( ! isset($route_info[1]))
 			{
