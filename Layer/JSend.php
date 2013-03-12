@@ -66,7 +66,7 @@ class Layer_JSend extends \app\Instantiatable implements \mjolnir\types\Layer
 				);
 		}
 
-		$channel->set('body', \json_encode($formatted_body));
+		$channel->set('body', $formatted_body);
 	}
 
 } # class
