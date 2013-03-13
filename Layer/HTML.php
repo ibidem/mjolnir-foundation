@@ -111,7 +111,7 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 			$html_before .= '<link rel="shortcut icon" href="'.$this->get('favicon').'" type="image/x-icon">';
 		}
 		// title
-		$html_before .= '<title>'.$this->get('title').'</title>';
+		$html_before .= '<title>'.$this->get('title', $this->channel()->get('title', 'Untitled')).'</title>';
 		// add fix for IE
 		$html_before .= '<!--[if lt IE 9)><script src="//'.$mjolnir_base['domain'].$mjolnir_base['path'].'media/static/html5shiv.js"></script><![endif)-->';
 		// stylesheets
@@ -132,12 +132,13 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 
 		# --- Relevant to search engine results ------------------------------ #
 
-		if ($this->get('description') !== null)
+		$pagedesc = $this->get('description', $this->channel()->get('description', null));
+		if ($pagedesc !== null)
 		{
 			// note: it is not guranteed search engines will use it; and they
 			// won't if the content of the page is nonexistent, or this
 			// description is not unique enough over multiple pages.
-			$html_before .= '<meta name="description" content="'.$this->get('description').'">';
+			$html_before .= '<meta name="description" content="'.$pagedesc.'">';
 		}
 
 		// extra garbage: keywords, generator, author
