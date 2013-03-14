@@ -113,6 +113,27 @@
 					->recover_exceptions()
 					->render();
 			},
+					
+		// basic json
+		'csv' => function ($relay, $target)
+			{
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('relaykey', $target);
+
+				$channel = \app\Channel::instance()
+					->set('relaynode', $relaynode);
+
+				echo \app\Application::stack
+					(
+						\app\Layer_HTTP::instance(),
+						\app\Layer_Access::instance(),
+						\app\Layer_CSV::instance(),
+						\app\Layer_MVC::instance()
+					)
+					->channel_is($channel)
+					->recover_exceptions()
+					->render();
+			},
 
 		// stack used to resolve relay'ed routes with theme drivers attached
 		'resource' => function ($relay, $target)
