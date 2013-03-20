@@ -35,7 +35,9 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 	protected function handle_exception($exception, $classname)
 	{
 		// @todo more elegant exception reporting
-
+		
+		\mjolnir\log_exception($exception);
+		
 		switch ($classname)
 		{
 			case 'Exception_NotFound':
