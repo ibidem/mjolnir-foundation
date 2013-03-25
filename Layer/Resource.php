@@ -69,7 +69,7 @@ class Layer_Resource extends \app\Instantiatable implements \mjolnir\types\Layer
 	protected function themeconfig()
 	{
 		$settings = \app\CFS::config('mjolnir/themes');
-		$environment = include ENVFILE;
+		$environment = \app\Env::key('environment.config');
 		$theme = $this->channel()->get('relaynode')->get('theme', null);
 
 		if (isset($environment['themes']) && isset($environment['themes'][$theme]))

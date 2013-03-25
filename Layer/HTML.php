@@ -97,7 +97,7 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		if ($this->get('favicon') === null)
 		{
 			// check for png version
-			if (\defined('PUBDIR') && \file_exists(PUBDIR.'favicon.png'))
+			if (\app\Env::key('www.path') !== null && \file_exists(\app\Env::key('www.path').'favicon.png'))
 			{
 				$html_before .= '<link rel="shortcut icon" href="//'.$mjolnir_base['domain'].$mjolnir_base['path'].'favicon.png" type="image/png">';
 			}
