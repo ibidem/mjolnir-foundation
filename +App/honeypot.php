@@ -7,13 +7,13 @@
 
 
 /**
- * @method \app\Application channel_is($channel)
  * @method \app\Application recover_exceptions()
  * @method \app\Application throw_exceptions()
  * @method \app\Application addmetarenderer($key, $metarenderer)
  * @method \app\Application injectmetarenderers(array $metarenderers = null)
- * @method \app\Application Channeled__channel_is($channel)
+ * @method \app\Application channel_is($channel)
  * @method \app\Channel channel()
+ * @method \app\Application channel_is($channel)
  */
 class Application extends \mjolnir\foundation\Application
 {
@@ -40,12 +40,12 @@ class Channel extends \mjolnir\foundation\Channel
 }
 
 /**
- * @method \app\Controller_Error channel_is($channel)
- * @method \app\Channel channel()
  * @method \app\Controller_Error add_preprocessor($name, $processor)
  * @method \app\Controller_Error add_postprocessor($name, $processor)
  * @method \app\Controller_Error preprocess()
  * @method \app\Controller_Error postprocess()
+ * @method \app\Controller_Error channel_is($channel)
+ * @method \app\Channel channel()
  */
 class Controller_Error extends \mjolnir\foundation\Controller_Error
 {
@@ -71,6 +71,16 @@ class Exception_NotImplemented extends \mjolnir\foundation\Exception_NotImplemen
 
 class Exception extends \mjolnir\foundation\Exception
 {
+}
+
+/**
+ * @method \app\Layer_CSV channel_is($channel)
+ * @method \app\Channel channel()
+ */
+class Layer_CSV extends \mjolnir\foundation\Layer_CSV
+{
+	/** @return \app\Layer_CSV */
+	static function instance() { return parent::instance(); }
 }
 
 /**
@@ -107,6 +117,16 @@ class Layer_JSend extends \mjolnir\foundation\Layer_JSend
 }
 
 /**
+ * @method \app\Layer_JSON channel_is($channel)
+ * @method \app\Channel channel()
+ */
+class Layer_JSON extends \mjolnir\foundation\Layer_JSON
+{
+	/** @return \app\Layer_JSON */
+	static function instance() { return parent::instance(); }
+}
+
+/**
  * @method \app\Layer_MVC channel_is($channel)
  * @method \app\Channel channel()
  */
@@ -138,6 +158,8 @@ class Layer_Theme extends \mjolnir\foundation\Layer_Theme
 
 /**
  * @method \app\Notice save()
+ * @method \app\Notice addmetarenderer($key, $metarenderer)
+ * @method \app\Notice injectmetarenderers(array $metarenderers = null)
  * @method \app\Notice set($name, $value)
  * @method \app\Notice add($name, $value)
  * @method \app\Notice metadata_is(array $metadata = null)
