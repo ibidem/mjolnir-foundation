@@ -60,11 +60,21 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \m
 		// appcache manifest
 		if ($this->get('appcache') !== null)
 		{
-			$html_before .= '<html manifest="'.$this->get('appcache').'">';
+			$html_before .= <<<EOS
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" manifest="'.$this->get('appcache').'"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" manifest="'.$this->get('appcache').'"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" manifest="'.$this->get('appcache').'"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" manifest="'.$this->get('appcache').'"> <!--<![endif]-->
+EOS;
 		}
 		else # no appcache
 		{
-			$html_before .= '<html>';
+			$html_before .= <<<EOS
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+EOS;
 		}
 		// head section
 		$html_before .= '<head>';
