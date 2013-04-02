@@ -8,7 +8,7 @@ return array
 					{
 						if (\extension_loaded('curl'))
 						{
-							return 'available';
+							return 'satisfied';
 						}
 
 						return 'error';
