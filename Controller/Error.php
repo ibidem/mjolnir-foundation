@@ -88,6 +88,7 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 				try 
 				{
 					return \app\ThemeView::fortarget('exception-NotApplicable')
+						->pass('exception', $exception)
 						->pass('control', $this)
 						->pass('context', $this);
 				}
