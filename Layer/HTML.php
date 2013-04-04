@@ -304,13 +304,13 @@ EOS;
 				}
 			}
 
-			$html_after .= '<script type="text/javascript">yepnope({ load: [';
-			$html_after .= '\''.\addslashes(\array_shift($javascripts)).'\'';
+			$html_after .= '<script type="text/javascript">yepnope({ load: ['."\n";
+			$html_after .= "'".\addslashes(\array_shift($javascripts)).'\'';
 			foreach ($javascripts as $script)
 			{
-				$html_after .= ', \''.\addslashes($script).'\'';
+				$html_after .= ",\n'".\addslashes($script)."'";
 			}
-			$html_after .= '] });</script>';
+			$html_after .= "\n] });</script>";
 		}
 
 		$extra_footer_markup = $this->get('extra_footer_markup');
