@@ -68,6 +68,27 @@
 					->recover_exceptions()
 					->render();
 			},
+			
+		// like html, only general purpose
+		'raw' => function ($relay, $target)
+			{
+				$relaynode = \app\RelayNode::instance($relay)
+					->set('relaykey', $target);
+
+				$channel = \app\Channel::instance()
+					->set('relaynode', $relaynode);
+
+				echo \app\Application::stack
+					(
+						\app\Layer_HTTP::instance(),
+						\app\Layer_Access::instance(),
+						\app\Layer_Theme::instance(),
+						\app\Layer_MVC::instance()
+					)
+					->channel_is($channel)
+					->recover_exceptions()
+					->render();
+			},
 
 		// jsend is a json based communication protocol; the mvc layer can
 		// output PHP variables (strings, arrays, etc) and they'll be wrapped
