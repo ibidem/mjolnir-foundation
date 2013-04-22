@@ -247,7 +247,7 @@ EOS;
 		}
 
 		$scripts = $this->get('script');
-		if ( ! empty($scripts))
+		if ( ! empty($scripts) && \app\CFS::config('mjolnir/html')['js-loader'] !== null)
 		{
 			// javascript loader
 			$html_before .= '<script type="text/javascript" src="'.\app\CFS::config('mjolnir/html')['js-loader'].'"></script>';
@@ -307,13 +307,23 @@ EOS;
 
 			if ( ! empty($javascripts))
 			{
-				$html_after .= '<script type="text/javascript">yepnope({ load: ['."\n";
-				$html_after .= "'".\addslashes(\array_shift($javascripts)).'\'';
-				foreach ($javascripts as $script)
+				if (\app\CFS::config('mjolnir/html')['js-loader'] === null)
 				{
-					$html_after .= ",\n'".\addslashes($script)."'";
+					foreach ($javascripts as $script)
+					{
+						$html_after .= '<script type="application/javascript" src="'.\addslashes($script).'"></script>';
+					}
 				}
-				$html_after .= "\n] });</script>";
+				else # load using loader
+				{
+					$html_after .= '<script type="text/javascript">yepnope({ load: ['."\n";
+					$html_after .= "'".\addslashes(\array_shift($javascripts)).'\'';
+					foreach ($javascripts as $script)
+					{
+						$html_after .= ",\n'".\addslashes($script)."'";
+					}
+					$html_after .= "\n] });</script>";
+				}
 			}
 		}
 
