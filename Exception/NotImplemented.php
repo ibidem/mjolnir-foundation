@@ -11,6 +11,9 @@
  */
 class Exception_NotImplemented extends \app\Exception
 {
-	// empty
+	function __construct() 
+	{
+		$this->message = 'Not Implemented';
+	}
 
 } # class

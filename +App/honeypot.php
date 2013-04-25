@@ -11,9 +11,9 @@
  * @method \app\Application throw_exceptions()
  * @method \app\Application addmetarenderer($key, $metarenderer)
  * @method \app\Application injectmetarenderers(array $metarenderers = null)
- * @method \app\Application channel_is($channel)
+ * @method \app\Application channel_is($channel = null)
  * @method \app\Channel channel()
- * @method \app\Application channel_is($channel)
+ * @method \app\Application channel_is($channel = null)
  */
 class Application extends \mjolnir\foundation\Application
 {
@@ -44,7 +44,7 @@ class Channel extends \mjolnir\foundation\Channel
  * @method \app\Controller_Error add_postprocessor($name, $processor)
  * @method \app\Controller_Error preprocess()
  * @method \app\Controller_Error postprocess()
- * @method \app\Controller_Error channel_is($channel)
+ * @method \app\Controller_Error channel_is($channel = null)
  * @method \app\Channel channel()
  */
 class Controller_Error extends \mjolnir\foundation\Controller_Error
@@ -74,7 +74,7 @@ class Exception extends \mjolnir\foundation\Exception
 }
 
 /**
- * @method \app\Layer_CSV channel_is($channel)
+ * @method \app\Layer_CSV channel_is($channel = null)
  * @method \app\Channel channel()
  */
 class Layer_CSV extends \mjolnir\foundation\Layer_CSV
@@ -84,7 +84,7 @@ class Layer_CSV extends \mjolnir\foundation\Layer_CSV
 }
 
 /**
- * @method \app\Layer_HTML channel_is($channel)
+ * @method \app\Layer_HTML channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\Layer_HTML set($name, $value)
  * @method \app\Layer_HTML add($name, $value)
@@ -97,7 +97,7 @@ class Layer_HTML extends \mjolnir\foundation\Layer_HTML
 }
 
 /**
- * @method \app\Layer_HTTP channel_is($channel)
+ * @method \app\Layer_HTTP channel_is($channel = null)
  * @method \app\Channel channel()
  */
 class Layer_HTTP extends \mjolnir\foundation\Layer_HTTP
@@ -107,17 +107,7 @@ class Layer_HTTP extends \mjolnir\foundation\Layer_HTTP
 }
 
 /**
- * @method \app\Layer_JSend channel_is($channel)
- * @method \app\Channel channel()
- */
-class Layer_JSend extends \mjolnir\foundation\Layer_JSend
-{
-	/** @return \app\Layer_JSend */
-	static function instance() { return parent::instance(); }
-}
-
-/**
- * @method \app\Layer_JSON channel_is($channel)
+ * @method \app\Layer_JSON channel_is($channel = null)
  * @method \app\Channel channel()
  */
 class Layer_JSON extends \mjolnir\foundation\Layer_JSON
@@ -127,7 +117,17 @@ class Layer_JSON extends \mjolnir\foundation\Layer_JSON
 }
 
 /**
- * @method \app\Layer_MVC channel_is($channel)
+ * @method \app\Layer_JSend channel_is($channel = null)
+ * @method \app\Channel channel()
+ */
+class Layer_JSend extends \mjolnir\foundation\Layer_JSend
+{
+	/** @return \app\Layer_JSend */
+	static function instance() { return parent::instance(); }
+}
+
+/**
+ * @method \app\Layer_MVC channel_is($channel = null)
  * @method \app\Channel channel()
  */
 class Layer_MVC extends \mjolnir\foundation\Layer_MVC
@@ -137,7 +137,7 @@ class Layer_MVC extends \mjolnir\foundation\Layer_MVC
 }
 
 /**
- * @method \app\Layer_Resource channel_is($channel)
+ * @method \app\Layer_Resource channel_is($channel = null)
  * @method \app\Channel channel()
  */
 class Layer_Resource extends \mjolnir\foundation\Layer_Resource
@@ -147,7 +147,7 @@ class Layer_Resource extends \mjolnir\foundation\Layer_Resource
 }
 
 /**
- * @method \app\Layer_Theme channel_is($channel)
+ * @method \app\Layer_Theme channel_is($channel = null)
  * @method \app\Channel channel()
  */
 class Layer_Theme extends \mjolnir\foundation\Layer_Theme
