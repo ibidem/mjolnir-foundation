@@ -16,6 +16,11 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 	 */
 	function run()
 	{
+		if ($this->get('skip-processing', false))
+		{
+			return;
+		}
+
 		$channel = $this->channel();
 
 		// we register ourselves in the channel
@@ -37,7 +42,7 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 		}
 
 		$action = $relaynode->get('action', null);
-		if ($action !== null) 
+		if ($action !== null)
 		{
 			$action = $relaynode->get('prefix', 'action_').\str_replace('-', '_', $action);
 		}
@@ -45,7 +50,7 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 		{
 			$action = $relaynode->get('default.action', 'public_index');
 		}
-		
+
 
 		// we give the controller access to the channel
 		$controller->channel_is($channel);
@@ -57,7 +62,7 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 		// return the correct body to facilitate syntax; we simply set the
 		// channel body ourselves after the fact
 		$response = \call_user_func([$controller, $action]);
-		
+
 		if (\is_string($response))
 		{
 			$channel->set('body', $response);
@@ -70,7 +75,7 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 		{
 			$channel->set('body', $response);
 		}
-		
+
 		// we perform any controller postprocessing; this should happen on the
 		// channel mainly; the response is available in the channels body
 		// property
@@ -82,22 +87,29 @@ class Layer_MVC extends \app\Instantiatable implements \mjolnir\types\Layer
 	 */
 	function recover()
 	{
-		$relaynode = $this->channel()->get('relaynode');
-		$errornode = $relaynode->get('error.relaynode', null);
-
-		if ($errornode === null)
+		if ( ! $this->get('skip-error-handling', false))
 		{
-			$errornode = \app\RelayNode::instance()
-				->set('controller', \app\Controller_Error::instance())
-				->set('action', 'process_error')
-				->set('prefix', '');
-		}
-		else if (\is_string($errornode))
-		{
-			$errornode = \app\RelayNode::instance($errornode);
-		}
+			$relaynode = $this->channel()->get('relaynode');
+			$errornode = $relaynode->get('error.relaynode', null);
 
-		$this->channel()->set('relaynode', $errornode);
+			if ($errornode === null)
+			{
+				$errornode = \app\RelayNode::instance()
+					->set('controller', \app\Controller_Error::instance())
+					->set('action', 'process_error')
+					->set('prefix', '');
+			}
+			else if (\is_string($errornode))
+			{
+				$errornode = \app\RelayNode::instance($errornode);
+			}
+
+			$this->channel()->set('relaynode', $errornode);
+		}
+		else # skip re-processing
+		{
+			$this->set('skip-processing', true);
+		}
 	}
 
 } # class

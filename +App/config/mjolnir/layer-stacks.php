@@ -1,6 +1,6 @@
 <?php return array
 	(
-		# [!!] these names also act as extentions in routing and prefixes in 
+		# [!!] these names also act as extentions in routing and prefixes in
 		# controllers! we recomend you keep them simple
 
 		// general purpose stack with domain access control, header processing
@@ -68,7 +68,7 @@
 					->recover_exceptions()
 					->render();
 			},
-			
+
 		// like html, only general purpose
 		'raw' => function ($relay, $target)
 			{
@@ -113,7 +113,7 @@
 					->recover_exceptions()
 					->render();
 			},
-					
+
 		// basic json
 		'json' => function ($relay, $target)
 			{
@@ -129,12 +129,13 @@
 						\app\Layer_Access::instance(),
 						\app\Layer_JSON::instance(),
 						\app\Layer_MVC::instance()
+							->set('skip-error-handling', true)
 					)
 					->channel_is($channel)
 					->recover_exceptions()
 					->render();
 			},
-					
+
 		// basic json
 		'csv' => function ($relay, $target)
 			{
