@@ -7,10 +7,9 @@
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer, \mjolnir\types\Meta
+class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer
 {
 	use \app\Trait_Layer;
-	use \app\Trait_Meta;
 
 	/**
 	 * ...
@@ -289,7 +288,7 @@ EOS;
 	{
 		$html_after = "\n\n";
 		$scripts = $this->get('script', []);
-		
+
 		if ( ! empty($scripts))
 		{
 			$javascripts = [];
