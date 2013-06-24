@@ -19,14 +19,23 @@ class Layer_Resource extends \app\Instantiatable implements \mjolnir\types\Layer
 	function run()
 	{
 		$channel = $this->channel();
+		$relaynode = $channel->get('relaynode');
 
 		// we register ourselves in the channel
 		$channel->set('layer:resource', $this);
 
+		// set theme config
 		$themeconfig = $this->themeconfig();
 		$channel->set('themeconfig', $themeconfig);
 
-		$relaynode = $channel->get('relaynode');
+		// create theme object
+		$themename = $relaynode->get('theme', null);
+		$themepath = $this->themepath();
+		$theme = \app\Theme::instance($themename, $themepath);
+		$theme->channel_is($channel);
+		$channel->set('theme', $theme);
+
+		// run driver
 		$driver = $relaynode->get('theme.driver');
 
 		try
@@ -64,28 +73,41 @@ class Layer_Resource extends \app\Instantiatable implements \mjolnir\types\Layer
 	}
 
 	/**
-	 * @return array theme configuration
+	 * @return string path
 	 */
-	protected function themeconfig()
+	protected function themepath()
 	{
 		$settings = \app\CFS::config('mjolnir/themes');
 		$environment = \app\Env::key('environment.config');
-		$theme = $this->channel()->get('relaynode')->get('theme', null);
+		$themename = $this->channel()->get('relaynode')->get('theme', null);
 
-		if (isset($environment['themes']) && isset($environment['themes'][$theme]))
+		if (isset($environment['themes']) && isset($environment['themes'][$themename]))
 		{
-			$themepath = $environment['themes'][$theme].DIRECTORY_SEPARATOR;
-			$themefile = $themepath.$settings['themes.config'].EXT;
+			$themepath = $environment['themes'][$themename].DIRECTORY_SEPARATOR;
+
 		}
 		else # search for theme
 		{
 			$themepath = \app\CFS::dir
 				(
-					$settings['themes.dir'].DIRECTORY_SEPARATOR.$theme.DIRECTORY_SEPARATOR
+					$settings['themes.dir'].DIRECTORY_SEPARATOR.$themename.DIRECTORY_SEPARATOR
 				);
-
-			$themefile = $themepath.$settings['themes.config'].EXT;
 		}
+
+		return $themepath;
+	}
+
+	/**
+	 * @return array theme configuration
+	 */
+	protected function themeconfig()
+	{
+		$settings = \app\CFS::config('mjolnir/themes');
+		$themename = $this->channel()->get('relaynode')->get('theme', null);
+
+		$themepath = $this->themepath();
+
+		$themefile = $themepath.$settings['themes.config'].EXT;
 
 		if ($themefile)
 		{
@@ -100,7 +122,7 @@ class Layer_Resource extends \app\Instantiatable implements \mjolnir\types\Layer
 		{
 			throw new \app\Exception
 				(
-					'Missing theme configuration for ['.$theme.'].'
+					'Missing theme configuration for ['.$themename.'].'
 				);
 		}
 	}
