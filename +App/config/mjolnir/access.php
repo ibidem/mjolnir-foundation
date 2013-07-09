@@ -4,7 +4,7 @@
 			(
 				\app\Auth::Guest => array
 					(
-						Allow::relays
+						\app\Allow::relays
 							(
 								'mjolnir:api-404.route'
 							)
