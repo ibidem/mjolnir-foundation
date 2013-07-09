@@ -61,7 +61,7 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 			{
 				$this->error_handler($channel, 500, $e->getMessage());
 			}
-			catch (\app\Exception_Implemented $e)
+			catch (\app\Exception_NotImplemented $e)
 			{
 				$this->error_handler($channel, 501, 'Not Implemented');
 			}
