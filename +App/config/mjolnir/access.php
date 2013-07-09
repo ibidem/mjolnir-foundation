@@ -2,6 +2,15 @@
 	(
 		'whitelist' => array
 			(
+				\app\Auth::Guest => array
+					(
+						Allow::relays
+							(
+								'mjolnir:api-404.route'
+							)
+							->unrestricted(),
+					),
+			
 				'+mockup' => array
 					(
 						\app\Allow::relays

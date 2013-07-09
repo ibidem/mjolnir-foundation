@@ -14,6 +14,23 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 	/**
 	 * ...
 	 */
+	function api_404()
+	{
+		\mjolnir\log_exception(new \app\Exception_NotFound('Accessed Missing API.'));
+		return [ 'error' => 'URL called is not a recognized API.' ];
+	}
+	
+	/**
+	 * ...
+	 */
+	function action_404()
+	{
+		throw new \app\Exception_NotFound('URL called is not a recognized API.');
+	}
+	
+	/**
+	 * ...
+	 */
 	function process_error()
 	{
 		$exception = $this->channel()->get('exception', null);

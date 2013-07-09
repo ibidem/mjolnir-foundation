@@ -36,5 +36,16 @@ return array
 				'controller' => '\app\Controller_Mockup',
 				'action' => 'action_form',
 			),
+	
+		'mjolnir:api-404.route' => array
+			(
+				'matcher' => \app\URLRoute::instance()
+					->urlpattern('api/<anything>', ['anything' => '.+']),
+				'enabled' => true, # intentional
+			// MVC
+				'controller' => '\app\Controller_Error',
+				'action' => '404',
+				'prefix' => 'api_',
+			),
 
 	);
