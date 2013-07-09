@@ -39,6 +39,12 @@ class Channel extends \mjolnir\foundation\Channel
 	static function instance() { return parent::instance(); }
 }
 
+class Controller_Base_V1Api extends \mjolnir\foundation\Controller_Base_V1Api
+{
+	/** @return \app\Controller_Base_V1Api */
+	static function instance() { return parent::instance(); }
+}
+
 /**
  * @method \app\Controller_Error add_preprocessor($name, $processor)
  * @method \app\Controller_Error add_postprocessor($name, $processor)
@@ -74,6 +80,9 @@ class Exception extends \mjolnir\foundation\Exception
 }
 
 /**
+ * @method \app\Layer_CSV set($name, $value)
+ * @method \app\Layer_CSV add($name, $value)
+ * @method \app\Layer_CSV metadata_is(array $metadata = null)
  * @method \app\Layer_CSV channel_is($channel = null)
  * @method \app\Channel channel()
  */
@@ -84,11 +93,11 @@ class Layer_CSV extends \mjolnir\foundation\Layer_CSV
 }
 
 /**
- * @method \app\Layer_HTML channel_is($channel = null)
- * @method \app\Channel channel()
  * @method \app\Layer_HTML set($name, $value)
  * @method \app\Layer_HTML add($name, $value)
  * @method \app\Layer_HTML metadata_is(array $metadata = null)
+ * @method \app\Layer_HTML channel_is($channel = null)
+ * @method \app\Channel channel()
  */
 class Layer_HTML extends \mjolnir\foundation\Layer_HTML
 {
@@ -97,6 +106,9 @@ class Layer_HTML extends \mjolnir\foundation\Layer_HTML
 }
 
 /**
+ * @method \app\Layer_HTTP set($name, $value)
+ * @method \app\Layer_HTTP add($name, $value)
+ * @method \app\Layer_HTTP metadata_is(array $metadata = null)
  * @method \app\Layer_HTTP channel_is($channel = null)
  * @method \app\Channel channel()
  */
@@ -107,6 +119,9 @@ class Layer_HTTP extends \mjolnir\foundation\Layer_HTTP
 }
 
 /**
+ * @method \app\Layer_JSON set($name, $value)
+ * @method \app\Layer_JSON add($name, $value)
+ * @method \app\Layer_JSON metadata_is(array $metadata = null)
  * @method \app\Layer_JSON channel_is($channel = null)
  * @method \app\Channel channel()
  */
@@ -117,6 +132,9 @@ class Layer_JSON extends \mjolnir\foundation\Layer_JSON
 }
 
 /**
+ * @method \app\Layer_JSend set($name, $value)
+ * @method \app\Layer_JSend add($name, $value)
+ * @method \app\Layer_JSend metadata_is(array $metadata = null)
  * @method \app\Layer_JSend channel_is($channel = null)
  * @method \app\Channel channel()
  */
@@ -127,6 +145,9 @@ class Layer_JSend extends \mjolnir\foundation\Layer_JSend
 }
 
 /**
+ * @method \app\Layer_MVC set($name, $value)
+ * @method \app\Layer_MVC add($name, $value)
+ * @method \app\Layer_MVC metadata_is(array $metadata = null)
  * @method \app\Layer_MVC channel_is($channel = null)
  * @method \app\Channel channel()
  */
@@ -137,6 +158,9 @@ class Layer_MVC extends \mjolnir\foundation\Layer_MVC
 }
 
 /**
+ * @method \app\Layer_Resource set($name, $value)
+ * @method \app\Layer_Resource add($name, $value)
+ * @method \app\Layer_Resource metadata_is(array $metadata = null)
  * @method \app\Layer_Resource channel_is($channel = null)
  * @method \app\Channel channel()
  */
@@ -147,6 +171,9 @@ class Layer_Resource extends \mjolnir\foundation\Layer_Resource
 }
 
 /**
+ * @method \app\Layer_Theme set($name, $value)
+ * @method \app\Layer_Theme add($name, $value)
+ * @method \app\Layer_Theme metadata_is(array $metadata = null)
  * @method \app\Layer_Theme channel_is($channel = null)
  * @method \app\Channel channel()
  */
