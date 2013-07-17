@@ -36,7 +36,7 @@ return array
 				'controller' => '\app\Controller_Mockup',
 				'action' => 'action_form',
 			),
-	
+
 		'mjolnir:api-404.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()

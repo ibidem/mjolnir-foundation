@@ -1,7 +1,7 @@
 <?php return array
 	(
 		# This file also acts as default template for +theme files
-	
+
 		'theme.default' => 'classic',
 		'themes.dir'    => 'themes', # relative to +App/
 		'themes.config' => '+theme',
@@ -9,7 +9,7 @@
 		// target-to-file mapping
 		'mapping' => array
 			(
-				
+
 			//// Exceptions ////////////////////////////////////////////////////
 
 				'exception-NotFound' => array

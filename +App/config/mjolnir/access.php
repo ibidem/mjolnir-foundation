@@ -10,7 +10,7 @@
 							)
 							->unrestricted(),
 					),
-			
+
 				'+mockup' => array
 					(
 						\app\Allow::relays

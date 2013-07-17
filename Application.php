@@ -24,7 +24,7 @@ class Application extends \app\Instantiatable implements \mjolnir\types\Applicat
 			{
 				$layer->run();
 			}
-			
+
 			$channel->preprocess();
 			$channel->postprocess();
 
@@ -35,7 +35,7 @@ class Application extends \app\Instantiatable implements \mjolnir\types\Applicat
 			if ($this->recoverymode)
 			{
 				\mjolnir\log_exception($exception);
-				
+
 				try
 				{
 					// reset all layers

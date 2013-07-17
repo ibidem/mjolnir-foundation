@@ -28,7 +28,7 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Renderable, \
 			static::$notices = \app\Session::get('mjolnir:notices', []);
 		}
 	}
-	
+
 	/**
 	 * Creates a notice for the user. You can grab the notice(s) via
 	 * `Notice::all()`.
@@ -82,7 +82,7 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Renderable, \
 
 		return $this;
 	}
-	
+
 	/**
 	 * Notices that don't reach the user can cause a lot of trouble.
 	 */
@@ -93,7 +93,7 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Renderable, \
 			\mjolnir\log('Error', 'You have a unsaved notice with the message: '.$this->get('body', null));
 		}
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// interface: Renderable
 
@@ -104,7 +104,7 @@ class Notice extends \app\Instantiatable implements \mjolnir\types\Renderable, \
 	{
 		return $this->get('body', '');
 	}
-	
+
 	/**
 	 * @return string
 	 */

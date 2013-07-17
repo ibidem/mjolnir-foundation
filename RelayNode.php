@@ -13,7 +13,7 @@ class RelayNode extends \app\Instantiatable implements \mjolnir\types\RelayNode
 
 	/**
 	 * The source from a configuration can be passed to be used as metadata.
-	 * 
+	 *
 	 * @return static
 	 */
 	static function instance(array $source = null)
@@ -23,7 +23,7 @@ class RelayNode extends \app\Instantiatable implements \mjolnir\types\RelayNode
 		if ($source)
 		{
 			$instance->metadata_is($source);
-			
+
 			if ( ! \is_bool($source['matcher']))
 			{
 				$context = $source['matcher']->context();

@@ -20,7 +20,7 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 		\mjolnir\log_exception(new \app\Exception_NotFound('Accessed Missing API.'));
 		return [ 'error' => 'URL called is not a recognized API.' ];
 	}
-	
+
 	/**
 	 * ...
 	 */
@@ -29,7 +29,7 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 		$this->channel()->set('http:status', '404 Not Found');
 		throw new \app\Exception_NotFound('URL called is not a recognized API.');
 	}
-	
+
 	/**
 	 * ...
 	 */
@@ -54,7 +54,7 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 	protected function handle_exception($exception, $classname)
 	{
 		// bellow we don't need to check for command line usage since we are
-		// in a controller which is only likely to be called by another 
+		// in a controller which is only likely to be called by another
 		// controller as part of a http request
 
 		\mjolnir\log_exception($exception);
@@ -62,10 +62,10 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 		switch ($classname)
 		{
 			case 'Exception_NotFound':
-				try 
+				try
 				{
 					$this->channel()->set('http:status', '404 Not Found');
-				
+
 					return \app\ThemeView::fortarget('exception-NotFound')
 						->pass('control', $this)
 						->pass('context', $this);
@@ -85,10 +85,10 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 				}
 
 			case 'Exception_NotAllowed':
-				try 
+				try
 				{
 					$this->channel()->set('http:status', '403 Forbidden');
-				
+
 					return \app\ThemeView::fortarget('exception-NotAllowed')
 						->pass('control', $this)
 						->pass('context', $this);
@@ -108,10 +108,10 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 				}
 
 			case 'Exception_NotApplicable':
-				try 
+				try
 				{
 					$this->channel()->set('http:status', '403 Forbidden');
-				
+
 					return \app\ThemeView::fortarget('exception-NotApplicable')
 						->pass('exception', $exception)
 						->pass('control', $this)
@@ -132,10 +132,10 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 				}
 
 			case 'Exception_NotImplemented':
-				try 
+				try
 				{
 					$this->channel()->set('http:status', '501 Not Implemented');
-				
+
 					return \app\ThemeView::fortarget('exception-NotImplemented')
 						->pass('control', $this)
 						->pass('context', $this);
@@ -155,10 +155,10 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 				}
 
 			default:
-				try 
+				try
 				{
 					$this->channel()->set('http:status', '500 Internal Server Error');
-				
+
 					return \app\ThemeView::fortarget('exception-Unknown')
 						->pass('control', $this)
 						->pass('context', $this);

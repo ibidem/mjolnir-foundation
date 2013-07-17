@@ -32,5 +32,5 @@ abstract class Puppet extends \app\Instantiatable implements \mjolnir\types\Pupp
 	{
 		return isset(static::$grammar[1]) ? static::$grammar[1] : static::singular().'s';
 	}
-	
+
 } # class
