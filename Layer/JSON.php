@@ -16,6 +16,15 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 	 */
 	function run()
 	{
+		// setup custom error page; if the request encounters a FatalError and
+		// execution becomes unrecoverable, the system will still json'ish
+		// response back
+		\app\Env::set
+			(
+				'error-500.redirect',
+				\app\URL::href('mjolnir:api-500.route')
+			);
+
 		$channel = $this->channel();
 
 		// we register ourselves in the channel

@@ -28,6 +28,11 @@ class Application extends \app\Instantiatable implements \mjolnir\types\Applicat
 			$channel->preprocess();
 			$channel->postprocess();
 
+			foreach ($channel->get('application.preoutput', []) as $handler)
+			{
+				$handler();
+			}
+
 			return $channel->get('body', null);
 		}
 		catch (\Exception $exception)

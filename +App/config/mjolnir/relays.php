@@ -37,6 +37,17 @@ return array
 				'action' => 'action_form',
 			),
 
+		'mjolnir:api-500.route' => array
+			(
+				'matcher' => \app\URLRoute::instance()
+					->urlpattern('api/500'),
+				'enabled' => true, # intentional
+			// MVC
+				'controller' => '\app\Controller_Error',
+				'action' => '500',
+				'prefix' => 'api_',
+			),
+
 		'mjolnir:api-404.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()

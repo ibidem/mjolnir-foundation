@@ -6,6 +6,7 @@
 					(
 						\app\Allow::relays
 							(
+								'mjolnir:api-500.route',
 								'mjolnir:api-404.route'
 							)
 							->unrestricted(),

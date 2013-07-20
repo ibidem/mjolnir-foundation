@@ -20,9 +20,9 @@ class Layer_HTTP extends \app\Instantiatable implements \mjolnir\types\Layer
 		$channel->set('layer:http', $this);
 
 		$http = $this;
-		$channel->add_preprocessor
+		$channel->add
 			(
-				'http:headers',
+				'application.preoutput',
 				function () use ($http)
 				{
 					$http->httpheaders_using($http->channel());

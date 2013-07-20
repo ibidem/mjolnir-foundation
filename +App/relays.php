@@ -10,4 +10,5 @@ $mockup = $stacks['raw'];
 
 $api = $stacks['json'];
 
+\app\Router::process('mjolnir:api-500.route', $api);
 \app\Router::process('mjolnir:api-404.route', $api);

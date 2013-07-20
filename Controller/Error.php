@@ -14,9 +14,25 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 	/**
 	 * ...
 	 */
+	function api_500()
+	{
+		$this->channel()->set('http:status', '500 Internal Server Error');
+		$this->channel()->set('content-type', 'application/json');
+
+		# we're not logging the request since this is 99% of the time triggered
+		# by the internal error handling which has already logged the error far
+		# better then we can here
+
+		return [ 'error' => 'Internal Server Error' ];
+	}
+
+	/**
+	 * ...
+	 */
 	function api_404()
 	{
 		$this->channel()->set('http:status', '404 Not Found');
+		$this->channel()->set('content-type', 'application/json');
 		\mjolnir\log_exception(new \app\Exception_NotFound('Accessed Missing API.'));
 		return [ 'error' => 'URL called is not a recognized API.' ];
 	}
