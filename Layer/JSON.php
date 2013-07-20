@@ -31,7 +31,7 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 		$channel->set('layer:json', $this);
 
 		// set the correct content-type
-		$channel->add('http:header', ['content-type', 'application/json']);
+		$channel->add('http:header', ['content-type', 'application/json', true]);
 
 		$json = $this;
 		$channel->add_postprocessor
@@ -100,6 +100,7 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 	protected function error_handler(\mjolnir\types\Channel $channel, $status, $message)
 	{
 		$channel->set('http:status', $status);
+		$this->channel()->add('http:header', [ 'content-type', 'application/json', true ]);
 		$channel->set('body', ['error' => $message]);
 	}
 

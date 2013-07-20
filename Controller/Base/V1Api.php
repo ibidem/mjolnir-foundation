@@ -16,8 +16,10 @@ class Controller_Base_V1Api extends \app\Puppet implements \mjolnir\types\Contro
 	 */
 	function api_index()
 	{
-		$method = \app\Server::request_method();
+		$this->channel()->set('content-type', 'application/json');
 
+		$method = \app\Server::request_method();
+		
 		switch ($method)
 		{
 			case 'GET':

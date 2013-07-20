@@ -41,6 +41,8 @@ class Application extends \app\Instantiatable implements \mjolnir\types\Applicat
 			{
 				\mjolnir\log_exception($exception);
 
+				$channel->get('application.preoutput', []);
+
 				try
 				{
 					// reset all layers
@@ -64,6 +66,11 @@ class Application extends \app\Instantiatable implements \mjolnir\types\Applicat
 
 					$channel->preprocess();
 					$channel->postprocess();
+
+					foreach ($channel->get('application.preoutput', []) as $handler)
+					{
+						$handler();
+					}
 
 					return $channel->get('body', null);
 				}
