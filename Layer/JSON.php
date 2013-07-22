@@ -91,7 +91,7 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 	protected function standardize(\mjolnir\types\Channel $channel)
 	{
 		$body = $channel->get('body', null);
-		$channel->set('body', \json_encode($body));
+		$channel->set('body', $body !== null ? \json_encode($body) : '');
 	}
 
 	/**
