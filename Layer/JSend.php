@@ -19,6 +19,30 @@ class Layer_JSend extends \app\Instantiatable implements \mjolnir\types\Layer
 	 */
 	function run()
 	{
+		if (\function_exists('xdebug_disable'))
+		{
+			#
+			# When we're testing APIs we're almost always using a program to
+			# test that we're getting the correct response; so we're looking at
+			# a view interpreting json not a view interpreting html; hence the
+			# HTML error message just shows up as a big mess and also disturbs
+			# various other systems we might have in place for gracefully
+			# reporting or handling the error.
+			#
+
+			// Disable stack traces by xdebug when this layer is used
+			\xdebug_disable();
+		}
+
+		// setup custom error page; if the request encounters a FatalError and
+		// execution becomes unrecoverable, the system will still jsend
+		// response back
+		\app\Env::set
+			(
+				'error-500.redirect',
+				\app\URL::href('mjolnir:api-jsend-500.route')
+			);
+
 		$channel = $this->channel();
 
 		// we register ourselves in the channel

@@ -14,16 +14,35 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 	/**
 	 * ...
 	 */
-	function api_500()
+	function json_500()
 	{
 		$this->channel()->set('http:status', '500 Internal Server Error');
 		$this->channel()->add('http:header', [ 'content-type', 'application/json', true ]);
 
 		# we're not logging the request since this is 99% of the time triggered
 		# by the internal error handling which has already logged the error far
-		# better then we can here
+		# better then we can here; the 1% has likely dealt with it on it's own
 
 		return [ 'error' => 'Internal Server Error' ];
+	}
+
+	/**
+	 * ...
+	 */
+	function jsend_500()
+	{
+		$this->channel()->set('http:status', '500 Internal Server Error');
+		$this->channel()->add('http:header', [ 'content-type', 'application/json', true ]);
+
+		# we're not logging the request since this is 99% of the time triggered
+		# by the internal error handling which has already logged the error far
+		# better then we can here; the 1% has likely dealt with it on it's own
+
+		return array
+			(
+				'status' => 'error',
+				'message' => 'Internal Server Error'
+			);
 	}
 
 	/**

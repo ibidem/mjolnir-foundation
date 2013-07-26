@@ -37,15 +37,26 @@ return array
 				'action' => 'action_form',
 			),
 
-		'mjolnir:api-500.route' => array
+		'mjolnir:api-json-500.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
-					->urlpattern('api/500'),
+					->urlpattern('api/500.json'),
 				'enabled' => true, # intentional
 			// MVC
 				'controller' => '\app\Controller_Error',
 				'action' => '500',
-				'prefix' => 'api_',
+				'prefix' => 'json_',
+			),
+
+		'mjolnir:api-jsend-500.route' => array
+			(
+				'matcher' => \app\URLRoute::instance()
+					->urlpattern('api/500.jsend'),
+				'enabled' => true, # intentional
+			// MVC
+				'controller' => '\app\Controller_Error',
+				'action' => '500',
+				'prefix' => 'jsend_',
 			),
 
 		'mjolnir:api-404.route' => array
