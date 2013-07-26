@@ -79,7 +79,7 @@ class Layer_HTTP extends \app\Instantiatable implements \mjolnir\types\Layer
 		$final_headers = [];
 		foreach ($channel->get('http:header', []) as $header)
 		{
-			if (isset($header[3]) && $header[3] == false)
+			if (isset($header[2]) && $header[2] == false)
 			{
 				// the third parameter is interpreted as "replace" (just
 				// like \header's second) since there are headers that can
