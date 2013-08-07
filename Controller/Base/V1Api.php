@@ -33,20 +33,20 @@ class Controller_Base_V1Api extends \app\Puppet implements \mjolnir\types\Contro
 				}
 				else # normal GET request
 				{
-					return $this->get($_GET);
+					return $this->do_get($_GET);
 				}
 
 			case 'POST':
-				return $this->post($this->payload());
+				return $this->do_post($this->payload());
 
 			case 'PUT':
-				return $this->put($this->payload());
+				return $this->do_put($this->payload());
 
 			case 'PATCH':
-				return $this->patch($this->payload());
+				return $this->do_patch($this->payload());
 
 			case 'DELETE':
-				return $this->delete($this->payload());
+				return $this->do_delete($this->payload());
 
 			default:
 				throw new \app\Exception_NotApplicable('Unsuported Request Type');
@@ -62,11 +62,27 @@ class Controller_Base_V1Api extends \app\Puppet implements \mjolnir\types\Contro
 	}
 
 	/**
+	 * Overwrite hook.
+	 */
+	protected function do_get($conf)
+	{
+		return $this->get($conf);
+	}
+
+	/**
 	 * @return array
 	 */
 	function put($req)
 	{
 		return $this->patch($req);
+	}
+
+	/**
+	 * Overwrite hook.
+	 */
+	protected function do_put($req)
+	{
+		return $this->put($req);
 	}
 
 	/**
@@ -78,6 +94,14 @@ class Controller_Base_V1Api extends \app\Puppet implements \mjolnir\types\Contro
 	}
 
 	/**
+	 * Overwrite hook.
+	 */
+	protected function do_patch($req)
+	{
+		return $this->patch($req);
+	}
+
+	/**
 	 * @return array
 	 */
 	function post($req)
@@ -86,11 +110,27 @@ class Controller_Base_V1Api extends \app\Puppet implements \mjolnir\types\Contro
 	}
 
 	/**
+	 * Overwrite hook.
+	 */
+	protected function do_post($req)
+	{
+		return $this->post($req);
+	}
+
+	/**
 	 * @return array
 	 */
 	function delete($req)
 	{
 		throw new \app\Exception_NotImplemented();
+	}
+
+	/**
+	 * Overwrite hook.
+	 */
+	protected function do_delete($req)
+	{
+		return $this->delete($req);
 	}
 
 	/**
