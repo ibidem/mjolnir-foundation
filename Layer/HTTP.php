@@ -61,45 +61,59 @@ class Layer_HTTP extends \app\Instantiatable implements \mjolnir\types\Layer
 	 */
 	protected function httpheaders_using(\mjolnir\types\Channel $channel)
 	{
-		$http_config = \app\CFS::config('mjolnir/http');
-
-		$status = $channel->get('http:status', '200 OK');
-
-		if (\strtolower($http_config['interface']) === 'fastcgi')
+		if ( ! $channel->get('http:no-headers', false))
 		{
-			\header("Status: $status");
-		}
-		else # interface !== fastcgi
-		{
-			\header("HTTP/1.1 $status");
-		}
+			$http_config = \app\CFS::config('mjolnir/http');
 
-		// eg. $pipeline->add('http:header', ['content-type', 'text/plain', true])
+			$status = $channel->get('http:status', '200 OK');
 
-		$final_headers = [];
-		foreach ($channel->get('http:header', []) as $header)
-		{
-			if (isset($header[2]) && $header[2] == false)
+			if (\strtolower($http_config['interface']) === 'fastcgi')
 			{
-				// the third parameter is interpreted as "replace" (just
-				// like \header's second) since there are headers that can
-				// appear multiple times
+				\header("Status: $status");
+			}
+			else # interface !== fastcgi
+			{
+				\header("HTTP/1.1 $status");
+			}
 
+			// eg. $pipeline->add('http:header', ['content-type', 'text/plain', true])
+
+			$final_headers = [];
+			foreach ($channel->get('http:header', []) as $header)
+			{
+				if (isset($header[2]) && $header[2] == false)
+				{
+					// the third parameter is interpreted as "replace" (just
+					// like \header's second) since there are headers that can
+					// appear multiple times
+
+					\header
+					(
+						"{$header[0]}: {$header[1]}",
+						false # don't overwrite previous header
+					);
+				}
+				else # non-repeatable header
+				{
+					$final_headers[\strtolower($header[0])] = $header[1];
+				}
+			}
+
+			// add content-type channel value
+			$content_type = $channel->get('content-type', null);
+			if ($content_type !== null)
+			{
 				\header
 				(
-					"{$header[0]}: {$header[1]}",
-					false # don't overwrite previous header
+					"content-type: {$content_type}",
+					true # overwrite if previously set
 				);
 			}
-			else # non-repeatable header
-			{
-				$final_headers[\strtolower($header[0])] = $header[1];
-			}
-		}
 
-		foreach ($final_headers as $type => $header)
-		{
-			\header("{$type}: {$header}");
+			foreach ($final_headers as $type => $header)
+			{
+				\header("{$type}: {$header}");
+			}
 		}
 	}
 

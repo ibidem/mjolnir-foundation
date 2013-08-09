@@ -267,7 +267,8 @@ EOS;
 		}
 
 		// close head section
-		$html_before .= '</head><body class="'.\implode(' ', $this->get('body_classes', [])).'">';
+		$onunload = $this->get('html:onunload', null);
+		$html_before .= '</head><body class="'.\implode(' ', $this->get('body_classes', [])).'" '.($onunload !== null ? 'onunload="'.$onunload.'"' : '').'>';
 		// css switch for more streamline style transitions
 		if ($this->get('javascriptswitch'))
 		{
