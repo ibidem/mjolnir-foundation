@@ -51,19 +51,100 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer
 	}
 
 	/**
+	 * Retrieve a single property.
+	 *
+	 * @return mixed
+	 */
+	protected function prop($key, $default = null, $channel_prefix = 'html:')
+	{
+		// try to retrieve the channel property
+		// fallback to configuration value
+		// finally, fallback to hardcoded default
+		return $this->channel()->get($channel_prefix.$key, $this->get($key, $default));
+	}
+
+	/**
+	 * Retrieve the complete collection of properties.
+	 *
+	 * @return array
+	 */
+	protected function props($key, $default = null, $channel_prefix = 'html:')
+	{
+		$array1 = $this->channel()->get($channel_prefix.$key);
+		$array2 = $this->get($key);
+
+		// try to retrieve the channel property
+		// fallback to configuration value
+		// finally, fallback to hardcoded default
+		if ($array1 !== null)
+		{
+			if ($array2 !== null)
+			{
+				return \app\Arr::merge($array1, $array2);
+			}
+			else # $array2 is null
+			{
+				return $array1;
+			}
+		}
+		else if ($array2 !== null)
+		{
+			return $array2;
+		}
+		else # use default
+		{
+			return $default;
+		}
+	}
+
+	/**
+	 * Retrieve the complete unique set of properties.
+	 *
+	 * @return array
+	 */
+	protected function prop_index($key, $default = null, $channel_prefix = 'html:')
+	{
+		$array1 = $this->channel()->get($channel_prefix.$key);
+		$array2 = $this->get($key, $default);
+
+		// try to retrieve the channel property
+		// fallback to configuration value
+		// finally, fallback to hardcoded default
+		if ($array1 !== null)
+		{
+			if ($array2 !== null)
+			{
+				return \app\Arr::index($array1, $array2);
+			}
+			else # $array2 is null
+			{
+				return $array1;
+			}
+		}
+		else if ($array2 !== null)
+		{
+			return $array2;
+		}
+		else # use default
+		{
+			return $default;
+		}
+	}
+
+	/**
 	 * @return string
 	 */
 	protected function html_before(\mjolnir\types\Channel $channel)
 	{
-		$html_before = $this->get('doctype', '<!DOCTYPE html>')."\n";
+		$html_before = $this->prop('doctype', '<!DOCTYPE html>')."\n";
 		// appcache manifest
-		if ($this->get('appcache') !== null)
+		if ($this->prop('appcache') !== null)
 		{
 			$html_before .= <<<EOS
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" manifest="'.$this->get('appcache').'"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" manifest="'.$this->get('appcache').'"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" manifest="'.$this->get('appcache').'"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" manifest="'.$this->get('appcache').'"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" manifest="'.$this->prop('appcache').'"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" manifest="'.$this->prop('appcache').'"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" manifest="'.$this->prop('appcache').'"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" manifest="'.$this->prop('appcache').'"> <!--<![endif]-->
 EOS;
 		}
 		else # no appcache
@@ -84,18 +165,18 @@ EOS;
 
 		// content type
 		$html_before .= '<meta http-equiv="content-type" content="'
-			. $channel->get('content-type', 'text/html')
+			. $this->prop('content-type', 'text/html', null)
 			. '; charset='.$mjolnir_base['charset'].'">';
 
 		// Make a DNS handshake with a foreign domain, so the connection goes
 		// faster when the user eventually needs to access it.
 		// eg. //ajax.googleapis.com
-		foreach ($this->get('prefetch_domains', []) as $prefetch_domain)
+		foreach ($this->prop_index('dns-prefetch', []) as $prefetch_domain)
 		{
 			'<link rel="dns-prefetch" href="'.$prefetch_domain.'">';
 		}
 		// mobile viewport optimized: h5bp.com/viewport
-		$viewport = $this->get('viewport', null);
+		$viewport = $this->prop('viewport', null);
 		if ($viewport !== null)
 		{
 			$html_before .= '<meta name="viewport" content="'.$viewport.'">';
@@ -103,28 +184,28 @@ EOS;
 		// helps a little with compatibility; unnecesary \w .htaccess
 		$html_before .= '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">';
 		// standard favicon path
-		if ($this->get('favicon') === null)
+		if ($this->prop('favicon') === null)
 		{
 			// check for png version
 			if (\app\Env::key('www.path') !== null && \file_exists(\app\Env::key('www.path').'favicon.png'))
 			{
 				$html_before .= '<link rel="shortcut icon" href="//'.$mjolnir_base['domain'].$mjolnir_base['path'].'favicon.png" type="image/png">';
 			}
-			else #
+			else # no png version
 			{
 				$html_before .= '<link rel="shortcut icon" href="//'.$mjolnir_base['domain'].$mjolnir_base['path'].'favicon.ico" type="image/x-icon">';
 			}
 		}
 		else # predefined path
 		{
-			$html_before .= '<link rel="shortcut icon" href="'.$this->get('favicon').'" type="image/x-icon">';
+			$html_before .= '<link rel="shortcut icon" href="'.$this->prop('favicon').'" type="image/x-icon">';
 		}
 		// title
-		$html_before .= '<title>'.$this->get('title', $this->channel()->get('title', 'Untitled')).'</title>';
+		$html_before .= '<title>'.$this->prop('title', 'Untitled', null).'</title>';
 		// add fix for IE
 		$html_before .= '<!--[if lt IE 9)><script src="//'.$mjolnir_base['domain'].$mjolnir_base['path'].'media/static/html5shiv.js"></script><![endif)-->';
 		// stylesheets
-		foreach ($this->get('stylesheet', []) as $style)
+		foreach ($this->props('stylesheet', []) as $style)
 		{
 			$html_before .= '<link rel="stylesheet" type="'.$style['type'].'" href="'.$style['href'].'">';
 		}
@@ -134,14 +215,14 @@ EOS;
 		# --- Relevant to the social networks -------------------------------- #
 
 		// facebook og metas
-		if ($this->get('facebookmetas') !== null)
+		if ($this->prop('facebookmetas') !== null)
 		{
-			$html_before .= $this->get('facebookmetas');
+			$html_before .= $this->prop('facebookmetas');
 		}
 
 		# --- Relevant to search engine results ------------------------------ #
 
-		$pagedesc = $this->get('description', $this->channel()->get('description', null));
+		$pagedesc = $this->prop('description', null, null);
 		if ($pagedesc !== null)
 		{
 			// note: it is not guranteed search engines will use it; and they
@@ -151,23 +232,27 @@ EOS;
 		}
 
 		// extra garbage: keywords, generator, author
-		$keywords = $this->get('keywords');
-		if ( ! empty($keywords))
+		$keyword_array = $this->prop_index('keywords', null, null);
+		if ( ! empty($keyword_array))
 		{
 			$keywords = '';
-			foreach ($this->get('keywords') as $keyword)
+			foreach ($keyword_array as $keyword)
 			{
 				$keywords .= ' '.$keyword;
 			}
 			$html_before .= '<meta name="keywords" content="'.$keywords.'">';
 		}
-		if ($this->get('generator') !== null)
+
+		$generator = $this->prop('generator', null, null);
+		if ($generator !== null)
 		{
-			$html_before .= '<meta name="generator" content="'.$this->get('generator').'">';
+			$html_before .= '<meta name="generator" content="'.$generator.'">';
 		}
-		if ($this->get('author') !== null)
+
+		$author = $this->prop('author', null, null);
+		if ($author !== null)
 		{
-			$html_before .= '<meta name="author" content="'.$this->get('author').'">';
+			$html_before .= '<meta name="author" content="'.$author.'">';
 		}
 
 		# --- Relevant to crawlers ------------------------------------------- #
@@ -175,20 +260,23 @@ EOS;
 		// A canonical route is the route by which search engines should
 		// identify the current page; ragerdless of what the current url might
 		// look like.
-		if ($this->get('canonical') !== null)
+		$canonical = $this->prop('canonical', null);
+		if ($canonical !== null)
 		{
-			$html_before .= '<link rel="canonical" href="'.$this->get('canonical').'">';
+			$html_before .= '<link rel="canonical" href="'.$canonical.'">';
 		}
 
 		// sitemap, for search engines.
 		// see: http://www.sitemaps.org/protocol.html
-		if ($this->get('sitemap') !== null)
+		$sitemap = $this->get('sitemap');
+		if ($sitemap !== null)
 		{
-			$html_before .= '<link rel="sitemap" type="application/xml" title="Sitemap" href="'.$this->get('sitemap').'">';
+			$html_before .= '<link rel="sitemap" type="application/xml" title="Sitemap" href="'.$sitemap.'">';
 		}
 
 		// block search engines from viewing the page
-		if ($this->get('crawlers', true))
+		$crawlers = $this->prop('crawlers', true);
+		if ($crawlers)
 		{
 			$html_before .= '<meta name="robots" content="index, follow" />';
 		}
@@ -200,64 +288,88 @@ EOS;
 		# --- Feed and callbacks --------------------------------------------- #
 
 		// http://www.rssboard.org/rss-specification
-		if ($this->get('rssfeed') !== null)
+		$rssfeed = $this->prop('rssfeed');
+		if ($rssfeed !== null)
 		{
-			$html_before .= '<link rel="alternate" type="application/rss+xml" title="RSS" href="'.$this->get('rssfeed').'">';
+			$html_before .= '<link rel="alternate" type="application/rss+xml" title="RSS" href="'.$rssfeed.'">';
 		}
 
 		// http://www.atomenabled.org/developers/syndication/
-		if ($this->get('atomfeed') !== null)
+		$atomfeed = $this->prop('atomfeed');
+		if ($atomfeed !== null)
 		{
-			$html_before .= '<link rel="alternate" type="application/atom+xml" title="Atom" href="'.$this->get('atomfeed').'">';
+			$html_before .= '<link rel="alternate" type="application/atom+xml" title="Atom" href="'.$atomfeed.'">';
 		}
 
 		// http://codex.wordpress.org/Introduction_to_Blogging#Pingbacks
-		if ($this->get('pingback') !== null)
+		$pingback = $this->prop('pingback');
+		if ($pingback !== null)
 		{
-			$html_before .= '<link rel="pingback" href="'.$this->get('pingback').'">';
+			$html_before .= '<link rel="pingback" href="'.$pingback.'">';
 		}
 
 		# --- Extras --------------------------------------------------------- #
 
 		// see: http://humanstxt.org/
-		if ($this->get('humanstxt'))
+		$humantxt = $this->prop('humanstxt', false, null);
+		if ($humantxt !== null)
 		{
-			$html_before .= '<link type="text/plain" rel="author" href="'.$mjolnir_base['base_url'].'humans.txt">';
+			$html_before .= '<link type="text/plain" rel="author" href="'.\app\URL::base().'humans.txt">';
 		}
 
 		# Pin status (IE9 etc)
 
 		// name to use when pinned
-		if ($this->get('application_name') !== null)
+		$application_name = $this->prop('application_name');
+		if ($application_name !== null)
 		{
-			$html_before .= '<meta name="application-name" content="'.$this->get('application_name').'">';
+			$html_before .= '<meta name="application-name" content="'.$application_name.'">';
 		}
 
 		// tooltip to use when pinned
-		if ($this->get('application_tooltip') !== null)
+		$application_tooltip = $this->prop('application_tooltip');
+		if ($application_tooltip !== null)
 		{
-			$html_before .= '<meta name="msapplication-tooltip" content="'.$this->get('application_tooltip').'">';
+			$html_before .= '<meta name="msapplication-tooltip" content="'.$application_tooltip.'">';
 		}
 
 		// page to go to when pinned
-		if ($this->get('application_starturl') !== null)
+		$application_starturl = $this->prop('application_starturl');
+		if ($application_starturl !== null)
 		{
-			$html_before .= '<meta name="msapplication-starturl" content="'.$this->get('application_starturl').'">';
+			$html_before .= '<meta name="msapplication-starturl" content="'.$application_starturl.'">';
 		}
 
-		$scripts = $this->get('script');
+		$scripts = $this->props('script', null, null);
+
 		if ( ! empty($scripts) && \app\CFS::config('mjolnir/html')['js-loader'] !== null)
 		{
-			// javascript loader
-			$html_before .= '<script type="text/javascript" src="'.\app\CFS::config('mjolnir/html')['js-loader'].'"></script>';
+			$formats = $this->prop_index('js-loader-formats', ['application/javascript', 'text/javascript']);
+
+			$usable = false;
+			foreach ($scripts as $script)
+			{
+				if (\in_array($script['type'], $formats))
+				{
+					$usable = true;
+					break;
+				}
+			}
+
+			if ($usable)
+			{
+				// javascript loader
+				$html_before .= '<script type="text/javascript" src="'.\app\CFS::config('mjolnir/html')['js-loader'].'"></script>';
+			}
 		}
 
-		foreach ($this->get('headscript', []) as $script)
+		// head scripts
+		foreach ($this->props('startup-script', [], null) as $script)
 		{
 			$html_before .= '<script type="'.$script['type'].'" src="'.\addslashes($script['src']).'"></script>';
 		}
 
-		$extra_markup = $this->get('extra_markup');
+		$extra_markup = $this->props('extra-markup');
 		if ( ! empty($extra_markup))
 		{
 			foreach ($extra_markup as $markup)
@@ -267,10 +379,11 @@ EOS;
 		}
 
 		// close head section
-		$onunload = $this->get('html:onunload', null);
-		$html_before .= '</head><body class="'.\implode(' ', $this->get('body_classes', [])).'" '.($onunload !== null ? 'onunload="'.$onunload.'"' : '').'>';
+		$onunload = $this->prop('onunload', null);
+		$html_before .= '</head><body class="'.\implode(' ', $this->prop_index('body-class', [])).'" '.($onunload !== null ? 'onunload="'.$onunload.'"' : '').'>';
+
 		// css switch for more streamline style transitions
-		if ($this->get('javascriptswitch'))
+		if ($this->prop('javascriptswitch'))
 		{
 			$html_before .= '<script type="text/javascript">document.body.id = "javascript-enabled";</script>';
 		}
@@ -288,7 +401,7 @@ EOS;
 	protected function html_after()
 	{
 		$html_after = "\n\n";
-		$scripts = $this->get('script', []);
+		$scripts = $this->props('script', null, null);
 
 		if ( ! empty($scripts))
 		{
@@ -316,7 +429,8 @@ EOS;
 				}
 				else # load using loader
 				{
-					$html_after .= '<script type="text/javascript">yepnope({ load: ['."\n";
+					$jsloaderhandler = $this->prop('js-loader-handler', 'yepnope');
+					$html_after .= '<script type="text/javascript">'.$jsloaderhandler.'({ load: ['."\n";
 					$html_after .= "'".\addslashes(\array_shift($javascripts)).'\'';
 					foreach ($javascripts as $script)
 					{
@@ -327,7 +441,7 @@ EOS;
 			}
 		}
 
-		$extra_footer_markup = $this->get('extra_footer_markup');
+		$extra_footer_markup = $this->prop('extra-footer-markup');
 		if ( ! empty($extra_footer_markup))
 		{
 			foreach ($extra_footer_markup as $markup)
