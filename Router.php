@@ -127,14 +127,14 @@ class Router
 						}
 
 						// retrieve format
-						$format = 'html';
+						$format = 'default';
 						if (\preg_match('#.*\.(?<format>[a-z0-9-_]+)$#', $key, $matches))
 						{
 							$format = $matches['format'];
 						}
 
 						$prefix = 'action_';
-						if ($format !== 'html')
+						if ($format !== 'default')
 						{
 							$prefix = $format.'_';
 						}
