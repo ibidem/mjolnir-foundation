@@ -39,6 +39,16 @@ class Channel extends \mjolnir\foundation\Channel
 	static function instance() { return parent::instance(); }
 }
 
+/**
+ * @method \app\MarionetteCollection collection()
+ * @method \app\MarionetteModel model()
+ * @method \app\Controller_Base_V1Api add_preprocessor($name, $processor)
+ * @method \app\Controller_Base_V1Api add_postprocessor($name, $processor)
+ * @method \app\Controller_Base_V1Api preprocess()
+ * @method \app\Controller_Base_V1Api postprocess()
+ * @method \app\Controller_Base_V1Api channel_is($channel = null)
+ * @method \app\Channel channel()
+ */
 class Controller_Base_V1Api extends \mjolnir\foundation\Controller_Base_V1Api
 {
 	/** @return \app\Controller_Base_V1Api */
