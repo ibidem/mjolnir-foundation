@@ -1,5 +1,8 @@
 <?php return array
 	(
+		# [!!] We intentionally do not define the [default] format; to avoid it
+		# being accidentally used in plugins.
+
 		# [!!] these names also act as extentions in routing and prefixes in
 		# controllers! we recomend you keep them simple
 
