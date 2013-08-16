@@ -7,15 +7,18 @@
  * @copyright  (c) 2013, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Controller_Base_V1Api extends \app\Puppet implements \mjolnir\types\Controller
+class Controller_Base_V1Api extends \app\Puppet implements \mjolnir\types\Controller, \mjolnir\types\Meta
 {
 	use \app\Trait_Controller;
+	use \app\Trait_Meta;
 
 	/**
 	 * @return array
 	 */
 	function api_index()
 	{
+		$this->metadata_is($this->channel()->get('relaynode')->metadata());
+
 		$this->channel()->add
 			(
 				'http:header',
