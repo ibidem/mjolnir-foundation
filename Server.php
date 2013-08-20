@@ -245,4 +245,12 @@ class Server
 		}
 	}
 
+	/**
+	 * @return string
+	 */
+	static function url_signout()
+	{
+		return \app\URL::href('mjolnir:access/auth.route', ['action' => 'signout']);
+	}
+
 } # class
