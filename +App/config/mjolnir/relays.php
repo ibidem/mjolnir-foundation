@@ -5,36 +5,28 @@
 return array
 	(
 
-	// ---- Mockup ------------------------------------------------------------
-
-		'mjolnir:mockup.route' => array
+		'mjolnir:bootstrap.route' => array
 			(
-				'matcher' => \app\URLRoute::instance()
-					->urlpattern('mockup/<target>', $target),
-				'enabled' => false,
-			// MVC
-				'controller' => '\app\Controller_Mockup',
-				'action' => 'action_testing',
+					'matcher' => \app\URLRoute::instance()
+						->urlpattern('system/bootstrap.json'),
+					'enabled' => true,
+					// MVC
+					'controller' => '\app\Controller_Bootstrap',
+					'prefix' => 'json_',
+					'action' => 'index',
 			),
 
-		'mjolnir:mockup-errors.route' => array
-			(
-				'matcher' => \app\URLRoute::instance()
-					->urlpattern('mockup-errors/<target>', $target),
-				'enabled' => false,
-			// MVC
-				'controller' => '\app\Controller_Mockup',
-				'action' => 'action_errortesting',
-			),
+	// ---- Error Handing Relays ----------------------------------------------
 
-		'mjolnir:mockup-form.route' => array
+		'mjolnir:error/log.route' => array
 			(
-				'matcher' => \app\URLRoute::instance()
-					->urlpattern('form-mockup'),
-				'enabled' => false,
-			// MVC
-				'controller' => '\app\Controller_Mockup',
-				'action' => 'action_form',
+					'matcher' => \app\URLRoute::instance()
+					->urlpattern('error-log'),
+					'enabled' => true,
+					// MVC
+					'controller' => '\app\Controller_Error',
+					'action' => 'log',
+					'prefix' => 'action_',
 			),
 
 		'mjolnir:api-json-500.route' => array
@@ -68,6 +60,38 @@ return array
 				'controller' => '\app\Controller_Error',
 				'action' => '404',
 				'prefix' => 'api_',
+			),
+
+	// ---- Mockup ------------------------------------------------------------
+
+			'mjolnir:mockup.route' => array
+			(
+					'matcher' => \app\URLRoute::instance()
+					->urlpattern('mockup/<target>', $target),
+					'enabled' => false,
+					// MVC
+					'controller' => '\app\Controller_Mockup',
+					'action' => 'action_testing',
+			),
+
+			'mjolnir:mockup-errors.route' => array
+			(
+					'matcher' => \app\URLRoute::instance()
+					->urlpattern('mockup-errors/<target>', $target),
+					'enabled' => false,
+					// MVC
+					'controller' => '\app\Controller_Mockup',
+					'action' => 'action_errortesting',
+			),
+
+			'mjolnir:mockup-form.route' => array
+			(
+					'matcher' => \app\URLRoute::instance()
+					->urlpattern('form-mockup'),
+					'enabled' => false,
+					// MVC
+					'controller' => '\app\Controller_Mockup',
+					'action' => 'action_form',
 			),
 
 	);
