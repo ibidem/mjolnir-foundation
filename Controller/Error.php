@@ -27,7 +27,7 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 				$url = \preg_replace('#^media/themes/[^0-9]+/[0-9\.]+(-complete)?/#', '', $url);
 
 				$error_diagnostic = $_POST['message'].' ('.$_POST['location'].' -- '.$url.' @ Ln '.$_POST['line'].')';
-				\mjolnir\shortlog('Client', $error_diagnostic, 'ClientErrors/');
+				\mjolnir\shortlog('Client', $error_diagnostic);
 
 				if ($_POST['trace'])
 				{
@@ -35,22 +35,22 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 					$trace = \preg_replace('#(http(s)?:)?//'.$base_config['domain'].$base_config['path'].'media/themes/[^0-9]+/[0-9\.]+(-complete)?/#', '', $_POST['trace']);
 					$trace = \preg_replace('#(http(s)?:)?//'.$base_config['domain'].$base_config['path'].'#', '', $trace);
 
-					\mjolnir\masterlog('Client', $error_diagnostic."\n\t\t".\str_replace("\n", "\n\t\t", $trace)."\n", 'ClientErrors/');
+					\mjolnir\masterlog('Client', $error_diagnostic."\n\t\t".\str_replace("\n", "\n\t\t", $trace)."\n");
 				}
 				else # no trace
 				{
-					\mjolnir\masterlog('Client', $error_diagnostic, 'ClientErrors/');
+					\mjolnir\masterlog('Client', $error_diagnostic);
 				}
 
 			}
 			else # unknown format
 			{
-				\mjolnir\log('ClientError', 'Unknown format. POST: '.\serialize($_POST), 'ClientErrors/');
+				\mjolnir\log('ClientError', 'Unknown format. POST: '.\serialize($_POST));
 			}
 		}
 		else # logging
 		{
-			\mjolnir\log('Client', 'Recieved unconventional logging request from '.\app\Server::client_ip(), 'ClientErrors/');
+			\mjolnir\log('Client', 'Recieved unconventional logging request from '.\app\Server::client_ip());
 		}
 	}
 
