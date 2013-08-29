@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Controller_Bootstrap;
 
-class Controller_BootstrapTest extends \PHPUnit_Framework_TestCase
+class Controller_BootstrapTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

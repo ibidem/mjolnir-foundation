@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Layer_JSend;
 
-class Layer_JSendTest extends \PHPUnit_Framework_TestCase
+class Layer_JSendTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

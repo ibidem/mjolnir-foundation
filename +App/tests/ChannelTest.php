@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Channel;
 
-class ChannelTest extends \PHPUnit_Framework_TestCase
+class ChannelTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

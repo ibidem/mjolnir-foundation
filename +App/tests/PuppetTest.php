@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Puppet;
 
-class PuppetTest extends \PHPUnit_Framework_TestCase
+class PuppetTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

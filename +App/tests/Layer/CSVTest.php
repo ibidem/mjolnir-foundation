@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Layer_CSV;
 
-class Layer_CSVTest extends \PHPUnit_Framework_TestCase
+class Layer_CSVTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Layer_Resource;
 
-class Layer_ResourceTest extends \PHPUnit_Framework_TestCase
+class Layer_ResourceTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\RelayNode;
 
-class RelayNodeTest extends \PHPUnit_Framework_TestCase
+class RelayNodeTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

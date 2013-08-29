@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Layer_Theme;
 
-class Layer_ThemeTest extends \PHPUnit_Framework_TestCase
+class Layer_ThemeTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

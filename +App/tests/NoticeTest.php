@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Notice;
 
-class NoticeTest extends \PHPUnit_Framework_TestCase
+class NoticeTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

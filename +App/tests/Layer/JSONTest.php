@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Layer_JSON;
 
-class Layer_JSONTest extends \PHPUnit_Framework_TestCase
+class Layer_JSONTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

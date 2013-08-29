@@ -2,7 +2,7 @@
 
 use \mjolnir\foundation\Exception_NotAllowed;
 
-class Exception_NotAllowedTest extends \PHPUnit_Framework_TestCase
+class Exception_NotAllowedTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()
