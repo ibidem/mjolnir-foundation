@@ -201,7 +201,7 @@ EOS;
 			$html_before .= '<link rel="shortcut icon" href="'.$this->prop('favicon').'" type="image/x-icon">';
 		}
 		// title
-		$html_before .= '<title>'.$this->prop('title', 'Untitled', null).'</title>';
+		$html_before .= '<title>'.$this->prop('title', \app\CFS::config('mjolnir/base')['system']['title'], null).'</title>';
 		// add fix for IE
 		$html_before .= '<!--[if lt IE 9)><script src="//'.$mjolnir_base['domain'].$mjolnir_base['path'].'media/static/html5shiv.js"></script><![endif)-->';
 		// stylesheets
