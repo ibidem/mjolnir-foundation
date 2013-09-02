@@ -227,6 +227,11 @@ class Server
 			$user = \app\Auth::info();
 		}
 
+		if ($user === null)
+		{
+			return \app\Server::url_frontpage();
+		}
+
 		$server = \app\CFS::config('mjolnir/server');
 		if (isset($server['homepage']))
 		{
