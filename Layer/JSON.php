@@ -89,6 +89,10 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 			{
 				$this->error_handler($channel, 501, 'Not Implemented');
 			}
+			catch (\app\Exception_APIError $e)
+			{
+				$this->error_handler($channel, 500, 'API Error', $e->payload());
+			}
 			catch (\app\Exception $e)
 			{
 				$this->error_handler($channel, 500, 'Internal Server Error');
@@ -112,11 +116,19 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 	/**
 	 * ...
 	 */
-	protected function error_handler(\mjolnir\types\Channel $channel, $status, $message)
+	protected function error_handler(\mjolnir\types\Channel $channel, $status, $message, $payload = null)
 	{
 		$channel->set('http:status', $status);
 		$this->channel()->add('http:header', [ 'content-type', 'application/json', true ]);
-		$channel->set('body', ['error' => $message]);
+
+		if ($payload !== null)
+		{
+			$channel->set('body', ['error' => $message]);
+		}
+		else # got payload
+		{
+			$channel->set('body', $payload);
+		}
 	}
 
 } # class
