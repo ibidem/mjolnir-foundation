@@ -297,19 +297,24 @@ class Router
 	{
 		$key = \preg_replace('#(\..*)#', '', $key);
 
-		$key_parts = \explode('-', $key);
+		$dir_parts = \explode('--', $key);
 
-		$controller_name = \app\Arr::implode
-			(
-				'',
-				$key_parts,
-				function ($k, $value)
-				{
-					return \ucfirst($value);
-				}
-			);
+		$controller_name = [];
+		foreach ($dir_parts as $partial_key)
+		{
+			$key_parts = \explode('-', $partial_key);
+			$controller_name[] = \app\Arr::implode
+				(
+					'',
+					$key_parts,
+					function ($k, $value)
+					{
+						return \ucfirst($value);
+					}
+				);
+		}
 
-		return '\app\Controller_'.$controller_name;
+		return '\app\Controller_'.\implode('_', $controller_name);
 	}
 
 	/**
