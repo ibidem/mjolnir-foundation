@@ -137,6 +137,11 @@ class Controller_Error extends \app\Instantiatable implements \mjolnir\types\Con
 
 		\mjolnir\log_exception($exception);
 
+		if (\app\CFS::config('mjolnir/base')['development'])
+		{
+			throw $exception;
+		}
+
 		switch ($classname)
 		{
 			case 'Exception_NotFound':
