@@ -40,6 +40,15 @@ class Layer_HTML extends \app\Instantiatable implements \mjolnir\types\Layer
 	function recover()
 	{
 		$this->set('crawlers', false);
+		$exception = $this->channel()->get('exception', null);
+
+		if ($exception !== null)
+		{
+			if (\is_a($exception, '\app\Exception_LiveDump'))
+			{
+				\var_dump($exception->variable()); die;
+			}
+		}
 	}
 
 	/**
