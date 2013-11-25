@@ -6,7 +6,7 @@
  * @package    mjolnir
  * @category   Foundation
  * @author     Ibidem Team
- * @copyright  (c) 2012, Ibidem Team
+ * @copyright  (c) 2013, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
 class Exception_APIError extends \app\Exception
@@ -21,14 +21,24 @@ class Exception_APIError extends \app\Exception
 	{
 		if ($message !== null)
 		{
-			$this->message = $message;
+			parent::__construct($message);
 		}
 		else # no message
 		{
-			$this->message = 'API Error';
+			parent::__construct('API Error');
 		}
 
-		$this->payload = $payload;
+		if ($payload !== false)
+		{
+			if ($payload === null)
+			{
+				$this->payload = [ 'error' => $this->getMessage() ];
+			}
+			else # custom payload was provided
+			{
+				$this->payload = $payload;
+			}
+		}
 	}
 
 	/**

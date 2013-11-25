@@ -121,7 +121,7 @@ class Layer_JSON extends \app\Instantiatable implements \mjolnir\types\Layer
 		$channel->set('http:status', $status);
 		$this->channel()->add('http:header', [ 'content-type', 'application/json', true ]);
 
-		if ($payload !== null)
+		if ($payload === null)
 		{
 			$channel->set('body', ['error' => $message]);
 		}
