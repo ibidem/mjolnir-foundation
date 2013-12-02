@@ -469,7 +469,22 @@ EOS;
 	 */
 	protected function wrap(\mjolnir\types\Channel $channel)
 	{
-		$channel->set('body', $this->html_before($channel).$channel->get('body', '').$this->html_after());
+		if (\app\CFS::config('mjolnir/html')['output']['pretty'])
+		{
+			// format output
+			$html = $this->html_before($channel).$channel->get('body', '').$this->html_after();
+			$dom = new \DOMDocument();
+			$dom->preserveWhiteSpace = true;
+			$dom->loadHTML($html);
+			$dom->formatOutput = true;
+
+			$channel->set('body', $dom->saveHTML());
+		}
+		else # no formatting
+		{
+			$channel->set('body', $this->html_before($channel).$channel->get('body', '').$this->html_after());
+		}
+
 	}
 
 } # class
