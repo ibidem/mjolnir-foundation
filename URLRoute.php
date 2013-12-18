@@ -228,8 +228,6 @@ class URLRoute extends \app\Instantiatable implements \mjolnir\types\URLRoute
 	}
 
 	/**
-	 * @param string uri regex pattern
-	 * @param array uri parameters
 	 * @return string
 	 */
 	protected static function generate_uri($url, array $params = null)
